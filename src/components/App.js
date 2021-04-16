@@ -7,7 +7,7 @@ import Main from './Main/Main';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

@@ -1,0 +1,47 @@
+.promo {
+  background-color: #dddee3;
+  min-height: 630px;
+  background-image: url('../../../images/cover.svg');
+  background-repeat: no-repeat;
+  background-position: center 90%;
+  background-size: 680px;
+}
+
+.promo__title {
+  width: 300px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 31px;
+  line-height: 39px;
+  margin: 183px auto auto;
+  text-align: center;
+  letter-spacing: -1px;
+}
+
+@media screen and (min-width: 768px) {
+  .promo {
+    min-height: 844px;
+    background-position: center 89%;
+  }
+
+  .promo__title {
+    width: 680px;
+    font-size: 40px;
+    line-height: 52px;
+    margin-top: 301px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .promo {
+    min-height: 560px;
+    background-position: 87% 81%;
+    background-size: 722px;
+  }
+
+  .promo__title {
+    width: 626px;
+    text-align: left;
+    margin: 50px auto auto 70px;
+  }
+}
