@@ -45,6 +45,7 @@
 .nav__link_active {
   border-bottom: #000000 solid 2px;
   padding-bottom: 7px;
+  pointer-events: none;
 }
 
 .nav__link_profile {
