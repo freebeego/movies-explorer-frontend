@@ -11,6 +11,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <Main loggedIn={loggedIn} />
       <Switch>
         {!loggedIn &&
           <Route path="/sign-up">
@@ -32,14 +33,14 @@ function App() {
         </Route>
         }
 
-        <ProtectedRoute
+        {/*<ProtectedRoute
           exact
           path="/"
           component={Main}
           loggedIn={loggedIn}
-        />
+        />*/}
 
-        <ProtectedRoute
+        {/*<ProtectedRoute
           exact
           path="/movies"
           component={Movies}
@@ -62,7 +63,7 @@ function App() {
 
         <Route path="/">
           <NotFound />
-        </Route>
+        </Route>*/}
       </Switch>
     </CurrentUserContext.Provider>
   );
