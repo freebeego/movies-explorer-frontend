@@ -25,7 +25,7 @@
   font-weight: 500;
   font-size: 30px;
   line-height: 36px;
-  margin: 38px 0 0;
+  margin: 37px 0 0;
 }
 
 .student__specialization-age {
@@ -47,6 +47,9 @@
   display: flex;
   gap: 26px;
   margin-top: 40px;
+  margin-bottom: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .student__link {

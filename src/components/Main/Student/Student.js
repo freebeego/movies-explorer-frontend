@@ -22,10 +22,14 @@ function Student() {
             С&nbsp;2015 года работал в компании «СКБ&nbsp;Контур». После того, как прошёл курс по веб&#8209;разработке,
             начал заниматься фриланс&#8209;заказами&nbsp;и ушёл с постоянной работы.
           </p>
-          <div className="student__links">
-            <a href="#" className="student__link">Facebook</a>
-            <a href="#" className="student__link">Github</a>
-          </div>
+          <ul className="student__links">
+            <li>
+              <a href="#" className="student__link">Facebook</a>
+            </li>
+            <li>
+              <a href="#" className="student__link">Github</a>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
