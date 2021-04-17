@@ -15,7 +15,7 @@
   line-height: 39px;
   margin: 183px auto auto;
   text-align: center;
-  letter-spacing: -1px;
+  letter-spacing: -.7px;
 }
 
 @media screen and (min-width: 768px) {

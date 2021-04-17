@@ -1,6 +1,7 @@
 import Nav from './Nav/Nav';
 import Header from '../Header/Header';
 import Promo from './Promo/Promo';
+import About from './About/About';
 
 function Main({ loggedIn }) {
   return (
@@ -10,6 +11,7 @@ function Main({ loggedIn }) {
         loggedIn={loggedIn}
       />
       <Promo />
+      <About />
     </>
   );
 }
