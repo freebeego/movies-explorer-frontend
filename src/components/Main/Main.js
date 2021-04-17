@@ -5,6 +5,7 @@ import About from './About/About';
 import Techs from './Techs/Techs';
 import Student from './Student/Student';
 import Portfolio from './Portfolio/Portfolio';
+import Footer from '../Footer/Footer';
 
 function Main({ loggedIn }) {
   return (
@@ -18,6 +19,7 @@ function Main({ loggedIn }) {
       <Techs />
       <Student />
       <Portfolio />
+      <Footer />
     </>
   );
 }
