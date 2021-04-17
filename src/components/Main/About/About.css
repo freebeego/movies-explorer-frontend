@@ -3,7 +3,7 @@
 }
 
 .about__title {
-  margin: 0 0 16px;
+  margin: 0 0 60px;
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 900;
   font-size: 18px;
@@ -12,9 +12,12 @@
 }
 
 .about__title_border {
-  margin: 0 0 60px;
   min-height: 50px;
   border-bottom: #000000 solid 1px;
+}
+
+.about__title_sub {
+  margin: 0 0 16px;
 }
 
 .about__flex-container {
