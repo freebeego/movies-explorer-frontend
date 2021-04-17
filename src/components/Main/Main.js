@@ -4,6 +4,7 @@ import Promo from './Promo/Promo';
 import About from './About/About';
 import Techs from './Techs/Techs';
 import Student from './Student/Student';
+import Portfolio from './Portfolio/Portfolio';
 
 function Main({ loggedIn }) {
   return (
@@ -16,6 +17,7 @@ function Main({ loggedIn }) {
       <About />
       <Techs />
       <Student />
+      <Portfolio />
     </>
   );
 }

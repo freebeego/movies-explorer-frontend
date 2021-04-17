@@ -1,5 +1,5 @@
 .student {
-  padding: 80px 14px;
+  padding: 80px 14px 70px;
 }
 
 .student__title {
@@ -119,7 +119,7 @@
 
 @media screen and (min-width: 1280px) {
   .student {
-    padding: 110px 70px;
+    padding: 110px 70px 100px;
   }
 
   .student__photo {

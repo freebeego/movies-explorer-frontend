@@ -23,8 +23,8 @@ function Student() {
             начал заниматься фриланс&#8209;заказами&nbsp;и ушёл с постоянной работы.
           </p>
           <div className="student__links">
-            <a href="https://www.facebook.com/anton.pavlov.925" className="student__link">Facebook</a>
-            <a href="https://github.com/freebeego" className="student__link">Github</a>
+            <a href="#" className="student__link">Facebook</a>
+            <a href="#" className="student__link">Github</a>
           </div>
         </div>
       </div>
