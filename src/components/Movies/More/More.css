@@ -1,0 +1,29 @@
+.more {
+  display: block;
+  width: 240px;
+  height: 36px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 60px auto 80px;
+  padding: 0;
+  border: #e8e8e8 solid 1px;
+  border-radius: 6px;
+  background: none;
+}
+
+@media screen and (min-width: 768px) {
+  .more {
+    width: 320px;
+    height: 36px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .more {
+    margin-top: 73px;
+    width: 320px;
+    height: 36px;
+  }
+}

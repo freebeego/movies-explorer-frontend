@@ -1,7 +1,7 @@
 import './MoviesCardList.css';
 import MoviesCard from './MoviesCard/MoviesCard';
 
-function MoviesCardList({ cards }) {
+function MoviesCardList({ cards, children }) {
   function filmSaveToggle(e) {
     e.target.classList.toggle('card__save_saved');
   }
@@ -16,7 +16,13 @@ function MoviesCardList({ cards }) {
         <MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
+        <MoviesCard filmSaveToggle={filmSaveToggle} />
+        <MoviesCard filmSaveToggle={filmSaveToggle} />
+        <MoviesCard filmSaveToggle={filmSaveToggle} />
+        <MoviesCard filmSaveToggle={filmSaveToggle} />
+        <MoviesCard filmSaveToggle={filmSaveToggle} />
       </ul>
+      {children}
     </section>
   );
 }
