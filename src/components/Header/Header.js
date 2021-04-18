@@ -1,11 +1,13 @@
 import './Header.css';
 import React from 'react';
 import Logo from '../Logo/Logo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Header({ loggedIn }) {
+  const location = useLocation();
+
   return (
-    <header className="header">
+    <header className={'header' + (location.pathname === "/" ? ' header_grey' : '')}>
       <Link to="/" className="header__link header__link_logo">
         <Logo />
       </Link>

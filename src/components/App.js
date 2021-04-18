@@ -4,15 +4,18 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import './App.css';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Main from './Main/Main';
+import Movies from './Movies/Movies';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Main loggedIn={loggedIn} />
       <Switch>
+        <Route exact path="/">
+          <Main loggedIn={loggedIn} />
+        </Route>
         {!loggedIn &&
           <Route path="/sign-up">
             {/*<Register
@@ -33,21 +36,14 @@ function App() {
         </Route>
         }
 
-        {/*<ProtectedRoute
-          exact
-          path="/"
-          component={Main}
-          loggedIn={loggedIn}
-        />*/}
-
-        {/*<ProtectedRoute
+        <ProtectedRoute
           exact
           path="/movies"
           component={Movies}
           loggedIn={loggedIn}
         />
 
-        <ProtectedRoute
+        {/*<ProtectedRoute
           exact
           path="/saved-movies"
           component={SavedMovies}

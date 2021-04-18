@@ -2,8 +2,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background: #dddee3;
   padding: 18px 14px;
+}
+
+.header_grey {
+  background: #dddee3;
 }
 
 .header__auth-list {
