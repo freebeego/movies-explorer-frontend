@@ -5,6 +5,7 @@ import './App.css';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Main from './Main/Main';
 import Movies from './Movies/Movies';
+import SavedMovies from './SavedMovies/SavedMovies';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -43,14 +44,14 @@ function App() {
           loggedIn={loggedIn}
         />
 
-        {/*<ProtectedRoute
+        <ProtectedRoute
           exact
           path="/saved-movies"
           component={SavedMovies}
           loggedIn={loggedIn}
         />
 
-        <ProtectedRoute
+        {/*<ProtectedRoute
           exact
           path="/profile"
           component={Profile}

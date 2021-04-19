@@ -13,6 +13,11 @@
   background: none;
 }
 
+.more:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
 @media screen and (min-width: 768px) {
   .more {
     width: 320px;

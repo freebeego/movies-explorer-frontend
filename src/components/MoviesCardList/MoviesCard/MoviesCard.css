@@ -12,7 +12,7 @@
   margin: 0 auto;
 }
 
-.card__save {
+.card__button {
   width: 72px;
   height: 21px;
   border: none;
@@ -28,13 +28,13 @@
 }
 
 @media screen and (hover: hover) {
-  .card__save:hover {
-    opacity: .7;
+  .card__button:hover {
+    opacity: .8;
     cursor: pointer;
   }
 }
 
-.card__save_saved {
+.card__button_saved {
   font-size: 0;
   width: 21px;
   height: 21px;
@@ -45,19 +45,29 @@
   background-color: #ee3465;
 }
 
-.card__save_saved:hover {
+.card__button_saved:hover {
   opacity: unset;
 }
 
 @media screen and (hover: hover) {
-  .card__save_saved:hover {
+  .card__button_saved:hover {
     opacity: unset;
     background-image: url('../../../images/cancel.svg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 10px;
+    background-size: 8px;
     background-color: #f4f4f4;
   }
+}
+
+.card__button_remove {
+  font-size: 0;
+  width: 21px;
+  height: 21px;
+  background-image: url('../../../images/cancel.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 8px;
 }
 
 .card__caption {
@@ -95,7 +105,7 @@
     height: 190px;
   }
 
-  .card__save {
+  .card__button {
     top: 14px;
     right: 14px;
   }
