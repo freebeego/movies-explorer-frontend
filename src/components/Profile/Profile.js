@@ -1,12 +1,10 @@
 import './Profile.css';
 import Header from '../Header/Header';
 import Nav from '../Nav/Nav';
+import ProfileForm from './ProfileForm/ProfileForm';
+import ProfileFormInput from './ProfileForm/ProfileFormInput/ProfileFormInput';
 
 function Profile({ loggedIn }) {
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
-
   function handleLogout(e) {
     console.log('logout');
   }
@@ -19,18 +17,19 @@ function Profile({ loggedIn }) {
       />
       <section className="main">
         <h1 className="main__title">Привет, Виталий!</h1>
-        <form onSubmit={handleSubmit} className="main__form">
-          <label className="main__input-label">
-            Имя
-            <input placeholder="Введите имя" type="text" className="main__input"/>
-          </label>
-          <label className="main__input-label">
-            E-mail
-            <input placeholder="Введите email" type="email" className="main__input"/>
-          </label>
-          <button type="submit" className="main__button  main__button_submit">Редактировать</button>
-        </form>
-        <button onClick={handleLogout} className="main__button main__button_logout">Выйти из аккаунта</button>
+        <ProfileForm>
+          <ProfileFormInput
+            label="Имя"
+            placeholder="Введите имя"
+            type="text"
+          />
+          <ProfileFormInput
+            label="E-mail"
+            placeholder="Введите email"
+            type="email"
+          />
+        </ProfileForm>
+        <button onClick={handleLogout} className="main__button">Выйти из аккаунта</button>
       </section>
     </>
   );

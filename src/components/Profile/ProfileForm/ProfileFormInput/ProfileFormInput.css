@@ -1,0 +1,28 @@
+.profile-form__input-label {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  border-bottom: #e8e8e8 solid 1px;
+  margin-bottom: 17px;
+  padding-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-form__input-label:last-of-type {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-form__input {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 11px;
+  line-height: 13px;
+  border: none;
+  background-color: unset;
+  text-align: right;
+  width: 120px;
+}
