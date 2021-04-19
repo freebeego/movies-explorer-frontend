@@ -10,7 +10,7 @@ import Footer from '../Footer/Footer';
 function Main({ loggedIn }) {
   return (
     <>
-      {loggedIn && <Nav />}
+      { loggedIn && <Nav /> }
       <Header
         loggedIn={loggedIn}
       />

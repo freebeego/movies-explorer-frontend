@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Main from './Main/Main';
 import Movies from './Movies/Movies';
 import SavedMovies from './SavedMovies/SavedMovies';
+import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
 
 function App() {
@@ -52,12 +53,12 @@ function App() {
           loggedIn={loggedIn}
         />
 
-        {/*<ProtectedRoute
+        <ProtectedRoute
           exact
           path="/profile"
           component={Profile}
           loggedIn={loggedIn}
-        />*/}
+        />
 
         <Route path="/">
           <NotFound />
