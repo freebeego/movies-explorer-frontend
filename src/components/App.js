@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Main from './Main/Main';
 import Movies from './Movies/Movies';
 import SavedMovies from './SavedMovies/SavedMovies';
+import NotFound from './NotFound/NotFound';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -56,11 +57,11 @@ function App() {
           path="/profile"
           component={Profile}
           loggedIn={loggedIn}
-        />
+        />*/}
 
         <Route path="/">
           <NotFound />
-        </Route>*/}
+        </Route>
       </Switch>
     </CurrentUserContext.Provider>
   );
