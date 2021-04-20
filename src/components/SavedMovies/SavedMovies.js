@@ -1,7 +1,7 @@
 import './SavedMovies.css';
 import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
-import Search from '../Movies/Search/Search';
+import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 

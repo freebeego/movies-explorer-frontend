@@ -1,7 +1,7 @@
 import './Movies.css';
 import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
-import Search from './Search/Search';
+import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import More from './More/More';
 import Footer from '../Footer/Footer';
