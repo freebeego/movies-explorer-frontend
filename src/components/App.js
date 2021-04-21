@@ -13,7 +13,7 @@ import NotFound from './NotFound/NotFound';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
 
   function handleRegister() {
     console.log('register');
