@@ -10,10 +10,16 @@
   justify-content: space-between;
 }
 
-.profile-form__input-label:last-of-type {
-  border: none;
-  margin: 0;
-  padding: 0;
+.profile-form__input-label:hover {
+  border-bottom-color: #a0a0a0;
+}
+
+.profile-form__input-label_active {
+  border-bottom-color: #3456F3;
+}
+
+.profile-form__input-label_active:hover {
+  border-bottom-color: #3456F3;
 }
 
 .profile-form__input {
@@ -24,5 +30,10 @@
   border: none;
   background-color: unset;
   text-align: right;
-  width: 120px;
+  width: 50%;
+  outline: none;
+}
+
+.profile-form__input:focus::placeholder {
+  opacity: .5;
 }
