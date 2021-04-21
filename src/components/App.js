@@ -2,8 +2,8 @@ import React from 'react';
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import './App.css';
-import Ident from './Ident/Ident';
-import Input from './Ident/Form/Input/Input';
+import Register from './Register/Register';
+import Login from './Login/Login';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Main from './Main/Main';
 import Movies from './Movies/Movies';
@@ -13,7 +13,7 @@ import NotFound from './NotFound/NotFound';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   function handleRegister() {
     console.log('register');
@@ -32,46 +32,17 @@ function App() {
 
         {!loggedIn &&
           <Route path="/sign-up">
-            <Ident
-              onRegister={ handleRegister }
-              submitButtonText="Зарегистрироваться"
-            >
-              <Input
-                label="Имя"
-                placeholder="Введите имя"
-                type="text"
-              />
-              <Input
-                label="E-mail"
-                placeholder="Введите email"
-                type="email"
-              />
-              <Input
-                label="Пароль"
-                placeholder="Введите пароль"
-                type="password"
-              />
-            </Ident>
+            <Register
+              handleRegister={handleRegister}
+            />
           </Route>
         }
 
         {!loggedIn &&
         <Route path="/sign-in">
-          <Ident
-            onLogIn={ handleLogIn }
-            submitButtonText="Войти"
-          >
-            <Input
-              label="E-mail"
-              placeholder="Введите email"
-              type="email"
-            />
-            <Input
-              label="Пароль"
-              placeholder="Введите пароль"
-              type="password"
-            />
-          </Ident>
+          <Login
+            handleLogIn={handleLogIn}
+          />
         </Route>
         }
 

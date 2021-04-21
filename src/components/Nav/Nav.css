@@ -4,7 +4,7 @@
   left: 100vw;
   height: 100vh;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   transition: left .5s ease-out;
   background-color: #ffffff;
 }
@@ -85,7 +85,7 @@
   padding: 0;
   border: none;
   outline: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .hamburger-menu-button__pseudoicon,

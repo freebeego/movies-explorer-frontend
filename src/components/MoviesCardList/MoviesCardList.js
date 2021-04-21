@@ -16,6 +16,7 @@ function MoviesCardList({ cards, children }) {
   return (
     <section className="movies-cards">
       <ul className="movies-cards-list">
+        {/*<MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
@@ -23,8 +24,7 @@ function MoviesCardList({ cards, children }) {
         <MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
         <MoviesCard filmSaveToggle={filmSaveToggle} />
-        <MoviesCard filmSaveToggle={filmSaveToggle} />
-        <MoviesCard filmSaveToggle={filmSaveToggle} />
+        <MoviesCard filmSaveToggle={filmSaveToggle} />*/}
       </ul>
       {children}
     </section>
