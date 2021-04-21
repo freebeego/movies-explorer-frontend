@@ -24,10 +24,10 @@ function Student() {
           </p>
           <ul className="student__links">
             <li>
-              <a href="#" className="student__link">Facebook</a>
+              <a href="https://www.facebook.com/zuck" className="student__link">Facebook</a>
             </li>
             <li>
-              <a href="#" className="student__link">Github</a>
+              <a href="https://github.com/freebeego" className="student__link">Github</a>
             </li>
           </ul>
         </div>

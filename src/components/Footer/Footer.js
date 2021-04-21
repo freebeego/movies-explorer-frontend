@@ -7,13 +7,13 @@ function Footer() {
       <div className="footer__container">
         <ul className="footer__list">
           <li className="footer__list-item">
-            <a href="" className="footer__link">Яндекс.Практикум</a>
+            <a href="https://praktikum.yandex.ru" className="footer__link">Яндекс.Практикум</a>
           </li>
           <li className="footer__list-item">
-            <a href="" className="footer__link">Github</a>
+            <a href="https://github.com/freebeego" className="footer__link">Github</a>
           </li>
           <li className="footer__list-item">
-            <a href="" className="footer__link">Facebook</a>
+            <a href="https://www.facebook.com/zuck" className="footer__link">Facebook</a>
           </li>
         </ul>
         <p className="footer__copyright">&copy;2021</p>
