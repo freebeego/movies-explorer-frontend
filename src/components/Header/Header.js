@@ -8,9 +8,14 @@ function Header({ loggedIn }) {
 
   return (
     <header className={'header' + (location.pathname === "/" ? ' header_grey' : '')}>
-      <Link to="/" className="header__link header__link_logo">
-        <Logo />
-      </Link>
+      {
+        location.pathname !== "/" ?
+          <Link to="/" className="header__link header__link_logo">
+            <Logo />
+          </Link>
+          :
+          <Logo />
+      }
       {!loggedIn &&
         <ul className="header__auth-list">
           <li className="header__auth-list-item">
