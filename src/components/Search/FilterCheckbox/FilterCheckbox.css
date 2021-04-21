@@ -56,6 +56,11 @@
   margin-left: 13px;
 }
 
+.switch__label-text:hover {
+  cursor: pointer;
+  opacity: .7;
+}
+
 @media screen and (min-width: 768px) {
   .switch__label-text {
     font-size: 14px;
