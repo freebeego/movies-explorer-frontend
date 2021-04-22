@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Ident from '../Ident/Ident';
 import Input from '../Ident/Form/Input/Input';
 
-function Register({ handleRegister }) {
+function Register({ handleRegister, loggedIn }) {
   const [fieldsData, setFieldsData] = React.useState({ name: '', email: '', password: '' });
   const [fieldsError, setFieldsError] = React.useState({ name: '', email: false, password: false });
   const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
@@ -14,10 +14,15 @@ function Register({ handleRegister }) {
   const history = useHistory();
 
   React.useEffect(() => {
-    if (fieldsError.name || fieldsError.email || fieldsError.password ||
-      fieldsData.name === '' || fieldsData.email === '' || fieldsData.password === '')
+    if (
+      fieldsError.name || fieldsError.email || fieldsError.password ||
+      fieldsData.name === '' || fieldsData.email === '' || fieldsData.password === ''
+    ) {
       setIsSubmitButtonActive(false);
-    else setIsSubmitButtonActive(true);
+    }
+    else {
+      setIsSubmitButtonActive(true);
+    }
   }, [fieldsError, fieldsData]);
 
   function handleSubmit(e) {
@@ -25,6 +30,7 @@ function Register({ handleRegister }) {
     handleRegister(fieldsData)
       .then(() => history.push('/movies'))
       .catch((err) => {
+        console.log(err)
         setServerErrorMessage(err);
         setServerError(true);
       });
@@ -44,12 +50,21 @@ function Register({ handleRegister }) {
 
   return (
     <Ident
+      title="Добро пожаловать!"
+      bottomQuestion={{
+        question: 'Уже зарегистрированы?',
+        link: {
+          target: '/sign-in',
+          text: 'Войти'
+        }
+      }}
       onRegister={ handleRegister }
       submitButtonText="Зарегистрироваться"
       handleSubmit={handleSubmit}
       isSubmitButtonActive={isSubmitButtonActive}
       serverError={ serverError }
       serverErrorMessage={ serverErrorMessage }
+      loggedIn={loggedIn}
     >
       <Input
         name="name"

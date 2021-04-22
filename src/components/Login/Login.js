@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Ident from '../Ident/Ident';
 import Input from '../Ident/Form/Input/Input';
 
-function Login({ handleLogIn }) {
+function Login({ handleLogIn, loggedIn }) {
   const [fieldsData, setFieldsData] = React.useState({email: '', password: ''});
   const [fieldsError, setFieldsError] = React.useState({email: false, password: false});
   const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
@@ -14,9 +14,12 @@ function Login({ handleLogIn }) {
   const history = useHistory();
 
   React.useEffect(() => {
-    if (fieldsError.email || fieldsError.password || fieldsData.email === ''|| fieldsData.password === '')
+    if (fieldsError.email || fieldsError.password || fieldsData.email === ''|| fieldsData.password === '') {
       setIsSubmitButtonActive(false);
-    else setIsSubmitButtonActive(true);
+    }
+    else {
+      setIsSubmitButtonActive(true);
+    }
   }, [fieldsError, fieldsData]);
 
   function handleSubmit(e) {
@@ -43,12 +46,21 @@ function Login({ handleLogIn }) {
 
   return (
     <Ident
+      title="Рады видеть!"
+      bottomQuestion={{
+        question: 'Ещё не зарегистрированы?',
+        link: {
+          target: '/sign-up',
+          text: 'Регистрация'
+        }
+      }}
       onLogIn={ handleLogIn }
       submitButtonText="Войти"
       handleSubmit={handleSubmit}
       isSubmitButtonActive={isSubmitButtonActive}
       serverError={ serverError }
       serverErrorMessage={ serverErrorMessage }
+      loggedIn={ loggedIn }
     >
       <Input
         name="email"

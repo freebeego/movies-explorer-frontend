@@ -1,6 +1,7 @@
 class Api {
   constructor() {
-    this.url = 'https://api.movies.listen-me.ru/';
+    /*this.url = 'https://api.movies.listen-me.ru/';*/
+    this.url = 'http://localhost:3003/';
   }
 
   _fetch(path, queryParams = {}) {
@@ -58,7 +59,7 @@ class Api {
     return this._fetch('users/me');
   }
 
-  editProfile(name, email) {
+  editProfile({ name, email }) {
     return this._fetch('users/me',
       {
         method: 'PATCH',

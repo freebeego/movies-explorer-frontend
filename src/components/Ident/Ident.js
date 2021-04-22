@@ -1,5 +1,6 @@
 import './Ident.css';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import HeaderWithoutNavigation from '../HeaderWithoutNavigation/HeaderWithoutNavigation';
 import Form from './Form/Form';
 
@@ -9,14 +10,14 @@ function Ident({
                  handleSubmit,
                  isSubmitButtonActive,
                  serverError,
-                 serverErrorMessage
+                 serverErrorMessage,
+                 title,
+                 bottomQuestion
 }) {
-  const location = useLocation();
-
   return (
     <section className="ident">
       <HeaderWithoutNavigation>
-        {location.pathname === '/sign-up' ? 'Добро пожаловать!' : 'Рады видеть!' }
+        { title }
       </HeaderWithoutNavigation>
       <Form
         handleSubmit={ handleSubmit }
@@ -28,12 +29,12 @@ function Ident({
         { children }
       </Form>
       <p className="ident__bottom-question">
-        {location.pathname === '/sign-up' ? 'Уже зарегистрированы?' : 'Ещё не зарегистрированы?' }
+        {bottomQuestion.question}
         <Link
-          to={location.pathname === '/sign-up' ? '/sign-in' : '/sign-up' }
+          to={bottomQuestion.link.target}
           className="ident__bottom-question-link"
         >
-          {location.pathname === '/sign-up' ? 'Войти' : 'Регистрация' }
+          {bottomQuestion.link.text}
         </Link>
       </p>
     </section>

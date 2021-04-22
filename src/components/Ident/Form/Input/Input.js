@@ -12,13 +12,16 @@ function Input({
                  maxLength,
                  minLength,
                  errorMessage,
-                 pattern
+                 pattern,
+                 spellCheck = false
 }) {
   const inputOptions = {};
 
   inputOptions['name'] = name;
   inputOptions['type'] = type;
   inputOptions['placeholder'] = placeholder;
+  inputOptions['spellCheck'] = spellCheck;
+
   if (maxLength) inputOptions['maxLength'] = maxLength;
   if (minLength) inputOptions['minLength'] = minLength;
   if (value !== undefined) inputOptions['value'] = value;
@@ -31,7 +34,7 @@ function Input({
       <label className="input">
         {label}
         <input
-          {...inputOptions}
+          { ...inputOptions }
           className={'input__input-field' + (validError ? ' input__input-field_error' : '')}
         />
       </label>
