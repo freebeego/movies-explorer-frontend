@@ -1,5 +1,6 @@
 import './Register.css';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Ident from '../Ident/Ident';
 import Input from '../Ident/Form/Input/Input';
 
@@ -7,6 +8,10 @@ function Register({ handleRegister }) {
   const [fieldsData, setFieldsData] = React.useState({ name: '', email: '', password: '' });
   const [fieldsError, setFieldsError] = React.useState({ name: '', email: false, password: false });
   const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
+  const [serverError, setServerError] = React.useState(false);
+  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
+
+  const history = useHistory();
 
   React.useEffect(() => {
     if (fieldsError.name || fieldsError.email || fieldsError.password ||
@@ -17,7 +22,12 @@ function Register({ handleRegister }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleRegister(fieldsData);
+    handleRegister(fieldsData)
+      .then(() => history.push('/movies'))
+      .catch((err) => {
+        setServerErrorMessage(err);
+        setServerError(true);
+      });
   }
 
   function handleChange(e) {
@@ -38,6 +48,8 @@ function Register({ handleRegister }) {
       submitButtonText="Зарегистрироваться"
       handleSubmit={handleSubmit}
       isSubmitButtonActive={isSubmitButtonActive}
+      serverError={ serverError }
+      serverErrorMessage={ serverErrorMessage }
     >
       <Input
         name="name"

@@ -3,7 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import HeaderWithoutNavigation from '../HeaderWithoutNavigation/HeaderWithoutNavigation';
 import Form from './Form/Form';
 
-function Ident({ children, submitButtonText, handleSubmit, isSubmitButtonActive }) {
+function Ident({
+                 children,
+                 submitButtonText,
+                 handleSubmit,
+                 isSubmitButtonActive,
+                 serverError,
+                 serverErrorMessage
+}) {
   const location = useLocation();
 
   return (
@@ -13,10 +20,12 @@ function Ident({ children, submitButtonText, handleSubmit, isSubmitButtonActive 
       </HeaderWithoutNavigation>
       <Form
         handleSubmit={ handleSubmit }
-        submitButtonText={submitButtonText}
-        isSubmitButtonActive={isSubmitButtonActive}
+        submitButtonText={ submitButtonText }
+        isSubmitButtonActive={ isSubmitButtonActive }
+        serverError={ serverError }
+        serverErrorMessage={ serverErrorMessage }
       >
-        {children}
+        { children }
       </Form>
       <p className="ident__bottom-question">
         {location.pathname === '/sign-up' ? 'Уже зарегистрированы?' : 'Ещё не зарегистрированы?' }

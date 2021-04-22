@@ -13,29 +13,25 @@ import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
 
 function App() {
-  const history = useHistory();
+  /*const history = useHistory();*/
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   function handleRegister(dataUser) {
-    mainApi.signUp(dataUser)
+    return mainApi.signUp(dataUser)
       .then(({ _id, ...user }) => {
         setCurrentUser(user);
         setLoggedIn(true);
-        history.push('/movies')
-      })
-      .catch((err) => console.log(err));
+      });
   }
 
   function handleLogIn(dataUser) {
-    mainApi.signIn(dataUser)
+    return mainApi.signIn(dataUser)
       .then((user) => {
         setCurrentUser(user);
         setLoggedIn(true);
-        history.push('/movies')
-      })
-      .catch((err) => console.log(err));
+      });
   }
 
   return (

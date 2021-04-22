@@ -1,5 +1,6 @@
 import './Login.css';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Ident from '../Ident/Ident';
 import Input from '../Ident/Form/Input/Input';
 
@@ -7,6 +8,10 @@ function Login({ handleLogIn }) {
   const [fieldsData, setFieldsData] = React.useState({email: '', password: ''});
   const [fieldsError, setFieldsError] = React.useState({email: false, password: false});
   const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
+  const [serverError, setServerError] = React.useState(false);
+  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
+
+  const history = useHistory();
 
   React.useEffect(() => {
     if (fieldsError.email || fieldsError.password || fieldsData.email === ''|| fieldsData.password === '')
@@ -16,7 +21,12 @@ function Login({ handleLogIn }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleLogIn(fieldsData);
+    handleLogIn(fieldsData)
+      .then(() => history.push('/movies'))
+      .catch((err) => {
+        setServerErrorMessage(err);
+        setServerError(true);
+      });
   }
 
   function handleChange(e) {
@@ -37,6 +47,8 @@ function Login({ handleLogIn }) {
       submitButtonText="Войти"
       handleSubmit={handleSubmit}
       isSubmitButtonActive={isSubmitButtonActive}
+      serverError={ serverError }
+      serverErrorMessage={ serverErrorMessage }
     >
       <Input
         name="email"
