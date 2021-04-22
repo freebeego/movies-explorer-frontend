@@ -5,7 +5,7 @@
   font-size: 10px;
   line-height: 12px;
   color: #a0a0a0;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
 }
 
 .input__input-field {
@@ -25,10 +25,32 @@
   outline: none;
 }
 
-/*.input__input-field:focus {
-  box-shadow: 0 0 0 1px #3456f3;
+.input__input-field:focus {
+  border: #3456f3 solid 1px;
+  /*box-shadow: 0 0 0 1px #3456f3;*/
+  appearance: none;
 }
 
-.input__input-field_password {
+.input__input-field_error {
+  border: #ee3465 solid 1px;
   color: #ee3465;
-}*/
+}
+
+.input__input-field_error:focus {
+  border: #ee3465 solid 1px;
+}
+
+.input__error {
+  visibility: hidden;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  height: 12px;
+  color: #ee3465;
+  margin-bottom: 4px;
+}
+
+.input__error_active {
+  visibility: visible;
+}

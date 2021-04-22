@@ -1,7 +1,8 @@
-import React from 'react';
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import './App.css';
+import React from 'react';
+import { Route, Switch, useHistory } from "react-router-dom";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import mainApi from '../utils/MainApi';
 import Register from './Register/Register';
 import Login from './Login/Login';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
@@ -12,15 +13,29 @@ import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
 
 function App() {
+  const history = useHistory();
+
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-  function handleRegister() {
-    console.log('register');
+  function handleRegister(dataUser) {
+    mainApi.signUp(dataUser)
+      .then(({ _id, ...user }) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+        history.push('/movies')
+      })
+      .catch((err) => console.log(err));
   }
 
-  function handleLogIn() {
-    console.log('login');
+  function handleLogIn(dataUser) {
+    mainApi.signIn(dataUser)
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+        history.push('/movies')
+      })
+      .catch((err) => console.log(err));
   }
 
   return (

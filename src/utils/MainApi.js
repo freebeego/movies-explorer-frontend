@@ -19,7 +19,7 @@ class Api {
       });
   }
 
-  signUp(name, email, password) {
+  signUp({ name, email, password }) {
     return this._fetch('signup',
       {
         method: 'POST',
@@ -35,7 +35,7 @@ class Api {
     );
   }
 
-  signIn(email, password) {
+  signIn({ email, password }) {
     return this._fetch('signin',
       {
         method: 'POST',
@@ -98,6 +98,6 @@ class Api {
   }
 }
 
-const api = new Api();
+const mainApi = new Api();
 
-export default api;
+export default mainApi;

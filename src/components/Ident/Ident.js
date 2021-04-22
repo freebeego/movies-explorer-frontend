@@ -3,12 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import HeaderWithoutNavigation from '../HeaderWithoutNavigation/HeaderWithoutNavigation';
 import Form from './Form/Form';
 
-function Ident({ children, submitButtonText }) {
+function Ident({ children, submitButtonText, handleSubmit, isSubmitButtonActive }) {
   const location = useLocation();
-
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
 
   return (
     <section className="ident">
@@ -18,6 +14,7 @@ function Ident({ children, submitButtonText }) {
       <Form
         handleSubmit={ handleSubmit }
         submitButtonText={submitButtonText}
+        isSubmitButtonActive={isSubmitButtonActive}
       >
         {children}
       </Form>
