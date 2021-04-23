@@ -4,71 +4,109 @@ import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 import Search from '../Search/Search';
 import Preloader from '../Preloader/Preloader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import More from './More/More';
 import Footer from '../Footer/Footer';
 import getMovies from '../../utils/moviesApi';
+import { queryFilter, shortFilmFilter } from '../../utils/filters';
 
 function Movies({ loggedIn }) {
-  const [query, setQuery] = React.useState('');
-  const [filteredMovies, setFilteredMovies] = React.useState([]);
-  const [movies, setMovies] = React.useState([]);
+  const [query, setQuery] = React.useState(
+    localStorage.getItem('query') ? localStorage.getItem('query') : ''
+  );
+  const [queryFilteredMovies, setQueryFilteredMovies] = React.useState(
+    localStorage.getItem('filteredMovies') ? JSON.parse(localStorage.getItem('filteredMovies')) : []
+  );
+  const [isShortFilm, setIsShortFilm] = React.useState(
+    localStorage.getItem('short') ? localStorage.getItem('short') === 'true' : false
+  );
+  const [shortFilmFilteredMovies, setShortFilmFilteredMovies] = React.useState(
+    (localStorage.getItem('short') && localStorage.getItem('short') === 'true' &&
+      localStorage.getItem('filteredMovies')) ?
+      shortFilmFilter(JSON.parse(localStorage.getItem('filteredMovies'))) : []
+  );
+  const [shownMovies, setShownMovies] = React.useState([]);
   const [preloaderShown, setPreloaderShown] = React.useState(false);
-  const [isShortFilm, setIsShortFilm] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
-  React.useEffect(() => {
+  React.useEffect(
+    () => {
+      localStorage.setItem('query', query.trim());
+    },
+    [query]
+  );
 
-  }, []);
+  React.useEffect(
+    () => {
+    localStorage.setItem('filteredMovies', JSON.stringify(queryFilteredMovies));
+  },
+    [queryFilteredMovies]);
+
+  React.useEffect(
+    () => {
+      if (document.documentElement.clientWidth >= 1137) {
+        setShownMovies((isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).slice(0, 12));
+      } else if (document.documentElement.clientWidth >= 656) {
+        setShownMovies((isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).slice(0, 8));
+      } else {
+        setShownMovies((isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).slice(0, 5));
+      }
+    },
+    [isShortFilm, queryFilteredMovies, shortFilmFilteredMovies]
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
-
+    setErrorMessage('');
     if (query.trim()) {
       setPreloaderShown(true);
-
       getMovies()
         .then((movies) => {
-          const filteredMovies = movies.filter(
-            (movie) => movie.description.toLowerCase().includes(query.trim().toLowerCase())
-          );
-
-          localStorage.setItem('query', query.trim());
-          localStorage.setItem('movies', JSON.stringify(filteredMovies));
-
-          setPreloaderShown(false);
-          if (document.documentElement.clientWidth >= 1137) {
-            setMovies(filteredMovies.slice(0, 12));
-          } else if (document.documentElement.clientWidth >= 656) {
-            setMovies(filteredMovies.slice(0, 8));
+          const filteredMovies = queryFilter(movies, query.trim().toLowerCase());
+          if (!filteredMovies.length) {
+            setErrorMessage('По вашему запросу ничего не найдено.');
           } else {
-            setMovies(filteredMovies.slice(0, 5));
+            if (isShortFilm) {
+              setShortFilmFilteredMovies(shortFilmFilter(filteredMovies));
+            } else {
+              if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
+            }
+            setQueryFilteredMovies(filteredMovies);
+            setPreloaderShown(false);
           }
-          setFilteredMovies(filteredMovies);
         })
         .catch((err) => {
           setPreloaderShown(false);
+          setErrorMessage('Сервер не ответил на запрос. Попробуйте пожалуйста чуть позже.');
         });
     } else {
-
+      console.log('***')
+      setErrorMessage('Пустой запрос.');
     }
-
-    setQuery('');
   }
 
   function handleQueryChange(e) {
     setQuery(e.target.value);
   }
 
-  function handleSwitchPositionChange(e) {
+  function handleSwitchPositionChange() {
+    localStorage.setItem('short', String(!isShortFilm));
+    if (!isShortFilm && !shortFilmFilteredMovies.length) {
+      setShortFilmFilteredMovies(shortFilmFilter(queryFilteredMovies));
+    }
     setIsShortFilm(!isShortFilm);
-    localStorage.setItem('short', String(isShortFilm));
   }
 
   function handleMore() {
-    if (document.documentElement.clientWidth >= 1280) {
-      setMovies(filteredMovies.slice(0, movies.length + 3));
+    if (document.documentElement.clientWidth >= 1137) {
+      setShownMovies(
+        (isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).slice(0, shownMovies.length + 3)
+      );
     } else {
-      setMovies(filteredMovies.slice(0, movies.length + 2));
+      setShownMovies(
+        (isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).slice(0, shownMovies.length + 2)
+      );
     }
   }
 
@@ -83,10 +121,17 @@ function Movies({ loggedIn }) {
         isShortFilm={isShortFilm}
         handleSwitchPositionChange={handleSwitchPositionChange}
       />
-      <MoviesCardList movies={isShortFilm ? movies.filter((movie) => movie.duration <= 40) : movies}>
-        {preloaderShown && <Preloader/>}
-        <More handleMore={handleMore} visible={movies.length < filteredMovies.length} />
-      </MoviesCardList>
+      {errorMessage ?
+        <ErrorMessage message={errorMessage}/>
+        :
+        <MoviesCardList movies={preloaderShown ? [] : shownMovies}>
+          {preloaderShown && <Preloader/>}
+          {
+            !preloaderShown && shownMovies.length < (isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).length
+            && <More handleMore={handleMore} />
+          }
+        </MoviesCardList>
+      }
       <Footer />
     </>
   );

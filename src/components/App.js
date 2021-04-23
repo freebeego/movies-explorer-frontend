@@ -53,6 +53,7 @@ function App() {
       .then(() => {
         setCurrentUser({});
         setLoggedIn(false);
+        localStorage.clear();
       });
   }
 

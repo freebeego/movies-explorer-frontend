@@ -1,8 +1,8 @@
 import './More.css';
 
-function More({ handleMore, visible }) {
+function More({ handleMore }) {
   return (
-    <button onClick={handleMore} className={'more' + (visible ? ' more_visible' : '')}>Ещё</button>
+    <button onClick={handleMore} className="more">Ещё</button>
   );
 }
 
