@@ -1,8 +1,9 @@
 import './App.css';
 import React from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import mainApi from '../utils/MainApi';
+import Preloader from './Preloader/Preloader';
 import Register from './Register/Register';
 import Login from './Login/Login';
 import RedirectAfterAuth from './RedirectAfterAuth/RedirectAfterAuth';
@@ -16,26 +17,20 @@ import NotFound from './NotFound/NotFound';
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
-
-  const location = useLocation();
-  const history = useHistory();
+  const [initializationFinished, setInitializationFinished] = React.useState(false);
 
   React.useEffect(() => {
     mainApi.getMyInfo()
       .then((user) => {
         setLoggedIn(true);
         setCurrentUser(user);
+        setInitializationFinished(true);
       })
-      .catch(() => {
-        if (
-          location.pathname !== '/' &&
-          location.pathname !== '/sign-in' &&
-          location.pathname !== '/sign-up'
-        ) {
-          history.push('/sign-in');
-        }
+      .catch((err) => {
+        // TODO error message
+        setInitializationFinished(true);
       });
-  }, [history, location]);
+  }, []);
 
   function handleRegister(dataUser) {
     return mainApi.signUp(dataUser)
@@ -69,55 +64,62 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <Switch>
-        <Route exact path="/">
-          <Main loggedIn={ loggedIn } />
-        </Route>
+    <CurrentUserContext.Provider value={ currentUser }>
+      {!initializationFinished &&
+        <Preloader fullScreen={true} />
+      }
+      {initializationFinished &&
+        <>
+          <Switch>
+            <Route exact path="/">
+              <Main loggedIn={loggedIn}/>
+            </Route>
 
-        <RedirectAfterAuth
-          exact
-          path="/sign-up"
-          component={Register}
-          loggedIn={loggedIn}
-          handleRegister={handleRegister}
-        />
+            <RedirectAfterAuth
+            exact
+            path="/sign-up"
+            component={Register}
+            loggedIn={loggedIn}
+            handleRegister={handleRegister}
+            />
 
-        <RedirectAfterAuth
-          exact
-          path="/sign-in"
-          component={Login}
-          loggedIn={loggedIn}
-          handleLogIn={handleLogIn}
-        />
+            <RedirectAfterAuth
+            exact
+            path="/sign-in"
+            component={Login}
+            loggedIn={loggedIn}
+            handleLogIn={handleLogIn}
+            />
 
-        <ProtectedRoute
-          exact
-          path="/movies"
-          component={Movies}
-          loggedIn={loggedIn}
-        />
+            <ProtectedRoute
+            exact
+            path="/movies"
+            component={Movies}
+            loggedIn={loggedIn}
+            />
 
-        <ProtectedRoute
-          exact
-          path="/saved-movies"
-          component={SavedMovies}
-          loggedIn={loggedIn}
-        />
+            <ProtectedRoute
+            exact
+            path="/saved-movies"
+            component={SavedMovies}
+            loggedIn={loggedIn}
+            />
 
-        <ProtectedRoute
-          exact
-          path="/profile"
-          component={Profile}
-          loggedIn={loggedIn}
-          handleLogout={handleLogout}
-          handleEditProfile={handleEditProfile}
-        />
+            <ProtectedRoute
+            exact
+            path="/profile"
+            component={Profile}
+            loggedIn={loggedIn}
+            handleLogout={handleLogout}
+            handleEditProfile={handleEditProfile}
+            />
 
-        <Route path="/">
-          <NotFound />
-        </Route>
-      </Switch>
+            <Route path="/">
+            <NotFound />
+            </Route>
+          </Switch>
+        </>
+      }
     </CurrentUserContext.Provider>
   );
 }

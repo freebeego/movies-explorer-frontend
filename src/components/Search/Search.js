@@ -2,22 +2,12 @@ import './Search.css';
 import React from 'react';
 import FilterCheckbox from './FilterCheckbox/FilterCheckbox';
 
-function Search() {
-  const [input, setInput] = React.useState('');
-
-  function handleChange(e) {
-    setInput(e.target.value);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
-
+function Search({ handleSubmit, query, handleChange, isShortFilm, handleSwitchPositionChange }) {
   return (
     <form onSubmit={ handleSubmit } className="search">
-      <input type="text" value={ input } onChange={ handleChange } placeholder="Фильм" className="search__input"/>
+      <input type="text" value={ query } onChange={ handleChange } placeholder="Фильм" className="search__input"/>
       <button type="submit" className="search__submit" />
-      <FilterCheckbox />
+      <FilterCheckbox isShortFilm={isShortFilm} handleSwitchPositionChange={handleSwitchPositionChange} />
     </form>
   );
 }

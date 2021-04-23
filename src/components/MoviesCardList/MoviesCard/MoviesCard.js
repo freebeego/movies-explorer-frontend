@@ -1,13 +1,23 @@
 import './MoviesCard.css';
-import banner from '../../../images/banner.jpg';
 import { useLocation } from 'react-router-dom';
 
-function MoviesCard({ filmSaveToggle }) {
+function MoviesCard({ filmSaveToggle, banner, name, duration, trailerLink }) {
   const location = useLocation();
+
+  function durationFormatter(duration) {
+    let result ='';
+    if (duration >= 60) {
+      result += `${(duration - duration % 60) / 60}ч `;
+    }
+    result += duration % 60 ? `${duration % 60}м` : '';
+    return result;
+  }
 
   return (
     <li className="card">
-      <img src={ banner } alt="dfgdfgdfg" className="card__image"/>
+      <a href={trailerLink} target="_blank" rel="noreferrer" className="card__link">
+        <img src={ banner } alt={name} className="card__image"/>
+      </a>
       <button
         onClick={ filmSaveToggle }
         className={ 'card__button' + (location.pathname === "/saved-movies" ? " card__button_remove" : "") }
@@ -15,8 +25,10 @@ function MoviesCard({ filmSaveToggle }) {
         Сохранить
       </button>
       <div className="card__caption">
-        <span className="card__name">33 слова о дизайне</span>
-        <span className="card__duration">1ч 17м</span>
+        <span className="card__name">{name}</span>
+        <span className="card__duration">
+          {durationFormatter(duration)}
+        </span>
       </div>
     </li>
   );

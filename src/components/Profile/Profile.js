@@ -20,17 +20,27 @@ function Profile({ loggedIn, handleLogout, handleEditProfile }) {
   }, [currentUser]);
 
   React.useEffect(() => {
-    if (fieldsError.name || fieldsError.email || fieldsData.name === '' || fieldsData.email === '') {
+    if (
+      fieldsError.name || fieldsError.email ||
+      fieldsData.name === '' || fieldsData.email === '' ||
+      (fieldsData.name.trim() === currentUser.name && fieldsData.email.trim() === currentUser.email)
+    ) {
       setIsSubmitButtonActive(false);
     }
     else {
       setIsSubmitButtonActive(true);
     }
-  }, [fieldsError, fieldsData]);
+  }, [fieldsError, fieldsData, currentUser]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleEditProfile(fieldsData)
+
+    const user = {};
+
+    if (fieldsData.name !== currentUser.name) user.name = fieldsData.name;
+    if (fieldsData.email !== currentUser.email) user.email = fieldsData.email;
+
+    handleEditProfile(user)
       .then(() => {
         setServerError(false);
         setServerErrorMessage('');

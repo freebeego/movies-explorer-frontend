@@ -1,5 +1,5 @@
 .more {
-  display: block;
+  display: none;
   width: 240px;
   height: 36px;
   font-family: 'Inter', Arial, sans-serif;
@@ -11,6 +11,10 @@
   border: #e8e8e8 solid 1px;
   border-radius: 6px;
   background: none;
+}
+
+.more_visible {
+  display: block;
 }
 
 .more:hover {

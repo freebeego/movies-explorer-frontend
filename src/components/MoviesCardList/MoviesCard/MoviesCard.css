@@ -4,6 +4,15 @@
   position: relative;
 }
 
+.card__link {
+  height: 168px;
+}
+
+.card__link:hover {
+  cursor: pointer;
+  opacity: .7;
+}
+
 .card__image {
   width: 300px;
   height: 168px;
@@ -101,6 +110,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .card__link {
+    height: 190px;
+  }
+
   .card__image {
     width: 339px;
     height: 190px;
@@ -122,6 +135,10 @@
 }
 
 @media screen and (min-width: 1280px) {
+  .card__link {
+    height: 201px;
+  }
+
   .card__image {
     width: 360px;
     height: 201px;

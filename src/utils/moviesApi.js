@@ -1,8 +1,7 @@
-function getMovies() {
-  return this._fetch(
+export default function getMovies() {
+  return fetch(
     'https://api.nomoreparties.co/beatfilm-movies',
     {
-      credentials: 'include',
       headers: { 'Accept': 'application/json' }
     }
   )
@@ -12,5 +11,3 @@ function getMovies() {
       return res.json().then(res => Promise.reject(res.message));
     });
 }
-
-export default getMovies;
