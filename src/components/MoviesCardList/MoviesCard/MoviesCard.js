@@ -1,7 +1,7 @@
 import './MoviesCard.css';
 import { useLocation } from 'react-router-dom';
 
-function MoviesCard({ filmSaveToggle, banner, name, duration, trailerLink }) {
+function MoviesCard({ filmSaveToggle, banner, name, duration, trailerLink, id, isMine }) {
   const location = useLocation();
 
   function durationFormatter(duration) {
@@ -13,14 +13,19 @@ function MoviesCard({ filmSaveToggle, banner, name, duration, trailerLink }) {
     return result;
   }
 
+  function saveHandle(e) {
+    filmSaveToggle(e.target, id);
+  }
+
   return (
     <li className="card">
       <a href={trailerLink} target="_blank" rel="noreferrer" className="card__link">
         <img src={ banner } alt={name} className="card__image"/>
       </a>
       <button
-        onClick={ filmSaveToggle }
-        className={ 'card__button' + (location.pathname === "/saved-movies" ? " card__button_remove" : "") }
+        onClick={ saveHandle }
+        className={ 'card__button' +
+        (location.pathname === '/saved-movies' ? ' card__button_remove' : isMine ? ' card__button_saved' : '') }
       >
         Сохранить
       </button>

@@ -11,7 +11,7 @@ import Footer from '../Footer/Footer';
 import getMovies from '../../utils/moviesApi';
 import { queryFilter, shortFilmFilter } from '../../utils/filters';
 
-function Movies({ loggedIn }) {
+function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
   const [query, setQuery] = React.useState(
     localStorage.getItem('query') ? localStorage.getItem('query') : ''
   );
@@ -29,6 +29,9 @@ function Movies({ loggedIn }) {
   const [shownMovies, setShownMovies] = React.useState([]);
   const [preloaderShown, setPreloaderShown] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [moreDidClick, setMoreDidClick] = React.useState(false);
+
+  const MoviesCardListRef = React.useRef();
 
   React.useEffect(
     () => {
@@ -56,6 +59,16 @@ function Movies({ loggedIn }) {
     [isShortFilm, queryFilteredMovies, shortFilmFilteredMovies]
   );
 
+  React.useEffect(
+    () => {
+      if (moreDidClick) {
+        MoviesCardListRef.current.scrollIntoView({behavior: 'smooth', block: 'end'});
+        setMoreDidClick(false);
+      }
+    },
+    [shownMovies, moreDidClick]
+  );
+
   function handleSubmit(e) {
     e.preventDefault();
     setErrorMessage('');
@@ -81,7 +94,6 @@ function Movies({ loggedIn }) {
           setErrorMessage('Сервер не ответил на запрос. Попробуйте пожалуйста чуть позже.');
         });
     } else {
-      console.log('***')
       setErrorMessage('Пустой запрос.');
     }
   }
@@ -108,6 +120,7 @@ function Movies({ loggedIn }) {
         (isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).slice(0, shownMovies.length + 2)
       );
     }
+    setMoreDidClick(true);
   }
 
   return (
@@ -124,7 +137,13 @@ function Movies({ loggedIn }) {
       {errorMessage ?
         <ErrorMessage message={errorMessage}/>
         :
-        <MoviesCardList movies={preloaderShown ? [] : shownMovies}>
+        <MoviesCardList
+          handleAddMyMovie={handleAddMyMovie}
+          handleDeleteMyMovie={handleDeleteMyMovie}
+          myMovies={myMovies}
+          movies={preloaderShown ? [] : shownMovies}
+          ref={MoviesCardListRef}
+        >
           {preloaderShown && <Preloader/>}
           {
             !preloaderShown && shownMovies.length < (isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies).length

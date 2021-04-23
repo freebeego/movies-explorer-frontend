@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import mainApi from '../utils/MainApi';
+import MainApi from '../utils/MainApi';
 import Preloader from './Preloader/Preloader';
 import Register from './Register/Register';
 import Login from './Login/Login';
@@ -18,12 +18,17 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [initializationFinished, setInitializationFinished] = React.useState(false);
+  const [myMovies, setMyMovies] = React.useState([]);
 
   React.useEffect(() => {
-    mainApi.getMyInfo()
+    MainApi.getMyInfo()
       .then((user) => {
         setLoggedIn(true);
         setCurrentUser(user);
+        return MainApi.getMyMovies();
+      })
+      .then((myMovies) => {
+        setMyMovies(myMovies);
         setInitializationFinished(true);
       })
       .catch((err) => {
@@ -33,7 +38,7 @@ function App() {
   }, []);
 
   function handleRegister(dataUser) {
-    return mainApi.signUp(dataUser)
+    return MainApi.signUp(dataUser)
       .then((user) => {
         setCurrentUser(user);
         setLoggedIn(true);
@@ -41,7 +46,7 @@ function App() {
   }
 
   function handleLogIn(dataUser) {
-    return mainApi.signIn(dataUser)
+    return MainApi.signIn(dataUser)
       .then((user) => {
         setCurrentUser(user);
         setLoggedIn(true);
@@ -49,7 +54,7 @@ function App() {
   }
 
   function handleLogout() {
-    return mainApi.signOut()
+    return MainApi.signOut()
       .then(() => {
         setCurrentUser({});
         setLoggedIn(false);
@@ -58,10 +63,32 @@ function App() {
   }
 
   function handleEditProfile(user) {
-    return mainApi.editProfile(user)
+    return MainApi.editProfile(user)
       .then((user) => {
         setCurrentUser(user);
       });
+  }
+
+  function handleAddMyMovie(movie) {
+    return MainApi.addMovie({
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: movie.image ? 'https://api.nomoreparties.co' + movie.image.url : '',
+      trailer: movie.trailerLink,
+      thumbnail: movie.image ? 'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url : '',
+      movieId: movie.id,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN
+    })
+      .then((movie) => setMyMovies([ ...myMovies, movie ]));
+  }
+
+  function handleDeleteMyMovie(movie) {
+    return MainApi.deleteCard(movie._id)
+      .then((movie) => setMyMovies(myMovies.filter((deletedMovie) => deletedMovie._id !== movie._id)));
   }
 
   return (
@@ -97,6 +124,9 @@ function App() {
             path="/movies"
             component={Movies}
             loggedIn={loggedIn}
+            handleAddMyMovie={handleAddMyMovie}
+            handleDeleteMyMovie={handleDeleteMyMovie}
+            myMovies={myMovies}
             />
 
             <ProtectedRoute
