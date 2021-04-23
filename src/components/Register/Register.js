@@ -1,6 +1,7 @@
 import './Register.css';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import validator from 'validator';
 import Ident from '../Ident/Ident';
 import Input from '../Ident/Form/Input/Input';
 
@@ -44,7 +45,7 @@ function Register({ handleRegister, loggedIn }) {
 
     setFieldsError({
       ...fieldsError,
-      [e.target.name]: !e.target.validity.valid
+      [e.target.name]: e.target.name === 'email' ? !validator.isEmail(e.target.value) : !e.target.validity.valid
     });
   }
 

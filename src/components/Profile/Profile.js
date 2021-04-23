@@ -1,6 +1,7 @@
 import './Profile.css';
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import validator from 'validator';
 import Header from '../Header/Header';
 import Nav from '../Nav/Nav';
 import ProfileForm from './ProfileForm/ProfileForm';
@@ -59,7 +60,7 @@ function Profile({ loggedIn, handleLogout, handleEditProfile }) {
 
     setFieldsError({
       ...fieldsError,
-      [e.target.name]: !e.target.validity.valid
+      [e.target.name]: e.target.name === 'email' ? !validator.isEmail(e.target.value) : !e.target.validity.valid
     });
   }
 

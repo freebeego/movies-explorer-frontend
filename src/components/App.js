@@ -31,7 +31,7 @@ function App() {
         setMyMovies(myMovies);
         setInitializationFinished(true);
       })
-      .catch((err) => {
+      .catch(() => {
         // TODO error message
         setInitializationFinished(true);
       });
@@ -76,12 +76,13 @@ function App() {
       duration: movie.duration,
       year: movie.year,
       description: movie.description,
-      image: movie.image ? 'https://api.nomoreparties.co' + movie.image.url : '',
-      trailer: movie.trailerLink,
-      thumbnail: movie.image ? 'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url : '',
+      image: movie.image ? 'https://api.nomoreparties.co' + movie.image.url : 'http://www.empty.com/asd.jpeg',
+      trailer: movie.trailerLink ? movie.trailerLink : 'http://www.empty.com',
+      thumbnail: movie.image ?
+        'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url : 'http://www.empty.com/asd.jpeg',
       movieId: movie.id,
       nameRU: movie.nameRU,
-      nameEN: movie.nameEN
+      nameEN: movie.nameEN ? movie.nameEN : 'empty'
     })
       .then((movie) => setMyMovies([ ...myMovies, movie ]));
   }
