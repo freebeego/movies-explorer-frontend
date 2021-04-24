@@ -89,7 +89,10 @@ function App() {
 
   function handleDeleteMyMovie(movie) {
     return MainApi.deleteCard(movie._id)
-      .then((movie) => setMyMovies(myMovies.filter((deletedMovie) => deletedMovie._id !== movie._id)));
+      .then((movie) => {
+        setMyMovies(myMovies.filter((deletedMovie) => deletedMovie._id !== movie._id))
+        return movie;
+      });
   }
 
   return (

@@ -116,7 +116,7 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
     }
     setIsShortFilm(!isShortFilm);
   }
-console.log(shownMovies)
+
   function handleMore() {
     if (document.documentElement.clientWidth >= 1137) {
       setShownMovies(

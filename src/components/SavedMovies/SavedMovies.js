@@ -36,6 +36,14 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
         queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase()) : myMovies
   );
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [emptyQuery, setEmptyQuery] = React.useState(false);
+
+  React.useEffect(
+    () => {
+      if (!myMovies.length) setErrorMessage('Вы еще не сохранили ни одного фильма')
+    },
+    [myMovies]
+  );
 
   React.useEffect(
     () => {
@@ -61,9 +69,9 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
 
   function onDeleteMyMovie(movie) {
     handleDeleteMyMovie(movie)
-      .then(() => {
-        setQueryFilteredMovies([]);
-        setShortFilmFilteredMovies([]);
+      .then((deletedMovie) => {
+        setQueryFilteredMovies(queryFilteredMovies.filter((movie) => movie._id !== deletedMovie._id ));
+        setShortFilmFilteredMovies(shortFilmFilteredMovies.filter((movie) => movie._id !== deletedMovie._id ))
       })
       .catch((err) => console.log(err));
   }
@@ -71,7 +79,6 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   function handleSwitchPositionChange() {
     localStorage.setItem('my_short', String(!isShortFilm));
     if (!isShortFilm && !shortFilmFilteredMovies.length && queryFilteredMovies.length) {
-      console.log('***')
       setShortFilmFilteredMovies(shortFilmFilter(queryFilteredMovies));
     }
     setIsShortFilm(!isShortFilm);
@@ -79,26 +86,25 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+
+    setErrorMessage('');
     localStorage.setItem('my_query', query.trim());
     if (query.trim()) {
+      setEmptyQuery(false);
       const filteredMovies = queryFilter(myMovies, query.trim().toLowerCase());
-      if (!filteredMovies.length) {
-        setErrorMessage('По вашему запросу ничего не найдено.')
+      if (isShortFilm) {
+        const shortFilteredMovies = shortFilmFilter(filteredMovies);
+        setShortFilmFilteredMovies(shortFilteredMovies);
       } else {
-        setQueryFilteredMovies(filteredMovies);
-        if (isShortFilm) {
-          const shortFilteredMovies = shortFilmFilter(queryFilteredMovies);
-          if (shortFilteredMovies) {
-            setShortFilmFilteredMovies(shortFilteredMovies);
-          } else {
-            setErrorMessage('По вашему запросу ничего не найдено.')
-          }
-        } else {
-          setShortFilmFilteredMovies([]);
-        }
+        if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
       }
+      setQueryFilteredMovies(filteredMovies);
     } else {
-      setErrorMessage('Пустой запрос.');
+      setEmptyQuery(true);
+      localStorage.setItem('my_query', '');
+      setQueryFilteredMovies([]);
+      setShortFilmFilteredMovies([]);
     }
   }
 
@@ -114,7 +120,7 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
         handleSwitchPositionChange={handleSwitchPositionChange}
       />
       {errorMessage ?
-        <ErrorMessage message={errorMessage}/>
+        <ErrorMessage message={emptyQuery ? 'Пустой запрос.' : errorMessage}/>
         :
         <MoviesCardList
           movies={shownMovies}
