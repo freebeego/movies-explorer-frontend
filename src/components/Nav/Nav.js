@@ -7,15 +7,16 @@ function Nav() {
 
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
 
-  const onClickMenu = () => setIsMenuOpened(!isMenuOpened);
+  const switchMenu = () => setIsMenuOpened(!isMenuOpened);
+
 
   return (
     <>
-      <button className="hamburger-menu-button" onClick={onClickMenu}>
+      <button className="hamburger-menu-button" onClick={switchMenu}>
               <span className={'hamburger-menu-button__pseudoicon' + (isMenuOpened ? ' hamburger-menu-button__pseudoicon_on' : '')}>
               </span>
       </button>
-
+      <div onClick={switchMenu} className={'overlay' + (isMenuOpened ? ' overlay_active' : '')} />
       <nav className={'nav' + (isMenuOpened ? ' nav_opened' : '')}>
         <ul className="nav__list">
           <li className="nav__list-item">

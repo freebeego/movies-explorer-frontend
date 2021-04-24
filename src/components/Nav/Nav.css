@@ -1,3 +1,21 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  opacity: 0;
+  z-index: 1;
+  transition: opacity .5s ease-out;
+  visibility: hidden;
+}
+
+.overlay_active {
+  opacity: .3;
+  visibility: visible;
+}
+
 .nav {
   position: absolute;
   top: 0;
@@ -86,6 +104,11 @@
   border: none;
   outline: none;
   z-index: 3;
+}
+
+.hamburger-menu-button:hover {
+  opacity: .7;
+  cursor: pointer;
 }
 
 .hamburger-menu-button__pseudoicon,
