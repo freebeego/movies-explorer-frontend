@@ -7,8 +7,14 @@ function Nav() {
 
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
 
-  const switchMenu = () => setIsMenuOpened(!isMenuOpened);
+  React.useEffect(
+    () => {
+      document.body.style.overflow = isMenuOpened ? 'hidden' : 'auto';
+    },
+    [isMenuOpened]
+  );
 
+  const switchMenu = () => setIsMenuOpened(!isMenuOpened);
 
   return (
     <>
