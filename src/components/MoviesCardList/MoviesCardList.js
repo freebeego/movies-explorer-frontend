@@ -9,7 +9,7 @@ const MoviesCardList = React.forwardRef(
 
     function filmSaveToggle(button, id) {
       if (location.pathname === "/saved-movies")  {
-        console.log('saved movies');
+        handleDeleteMyMovie(movies.find((movie) => movie._id === id));
       } else {
         if (button.classList.contains('card__button_saved')) {
           handleDeleteMyMovie(myMovies.find((movie) => movie.movieId === id));
@@ -28,16 +28,16 @@ const MoviesCardList = React.forwardRef(
       <section ref={ref} className="movies-cards">
         <ul className="movies-cards-list">
           {movies.map((movie) => {
-
             return <MoviesCard
-              key={movie.id}
-              isMine={isMine(movie)}
-              id={movie.id}
+              key={location.pathname === "/movies" ? movie.id : movie._id}
+              isMine={location.pathname === "/movies" ? isMine(movie) : true}
+              id={location.pathname === "/movies" ? movie.id : movie._id}
               filmSaveToggle={filmSaveToggle}
               name={movie.nameRU}
-              banner={movie.image ? 'https://api.nomoreparties.co' + movie.image.url : ''}
+              banner={!movie.image ? '' :
+                location.pathname === "/movies" ? 'https://api.nomoreparties.co' + movie.image.url : movie.image}
               duration={movie.duration}
-              trailerLink={movie.trailerLink}
+              trailerLink={location.pathname === "/movies" ? movie.trailerLink : movie.trailer}
             />
           })}
         </ul>

@@ -135,6 +135,8 @@ function App() {
             path="/saved-movies"
             component={SavedMovies}
             loggedIn={loggedIn}
+            handleDeleteMyMovie={handleDeleteMyMovie}
+            myMovies={myMovies}
             />
 
             <ProtectedRoute
