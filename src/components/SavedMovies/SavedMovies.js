@@ -17,14 +17,16 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   );
   const [queryFilteredMovies, setQueryFilteredMovies] = React.useState(
     localStorage.getItem('my_query') ?
-      queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase()) : []
+      queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase()) : myMovies
   );
   const [shortFilmFilteredMovies, setShortFilmFilteredMovies] = React.useState(
     (
       localStorage.getItem('my_query') &&
       localStorage.getItem('my_short') &&
       localStorage.getItem('my_short') === 'true'
-    ) ? shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) : []
+    ) ?
+      shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) :
+      shortFilmFilter(myMovies)
   );
   const [shownMovies, setShownMovies] = React.useState(
     (
@@ -37,13 +39,6 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   );
   const [errorMessage, setErrorMessage] = React.useState('');
   const [emptyQuery, setEmptyQuery] = React.useState(false);
-
-  React.useEffect(
-    () => {
-      if (!myMovies.length) setErrorMessage('Вы еще не сохранили ни одного фильма')
-    },
-    [myMovies]
-  );
 
   React.useEffect(
     () => {
@@ -61,6 +56,13 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
       }
     },
     [isShortFilm, queryFilteredMovies, shortFilmFilteredMovies]
+  );
+
+  React.useEffect(
+    () => {
+      if (!myMovies.length) setErrorMessage('Вы еще не сохранили ни одного фильма')
+    },
+    [myMovies, queryFilteredMovies, shortFilmFilteredMovies, isShortFilm]
   );
 
   function handleQueryChange(e) {
@@ -86,8 +88,6 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
-
     setErrorMessage('');
     localStorage.setItem('my_query', query.trim());
     if (query.trim()) {

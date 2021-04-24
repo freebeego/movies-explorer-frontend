@@ -13,6 +13,7 @@ import Movies from './Movies/Movies';
 import SavedMovies from './SavedMovies/SavedMovies';
 import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
+import validator from 'validator';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -77,7 +78,7 @@ function App() {
       year: movie.year,
       description: movie.description,
       image: movie.image ? 'https://api.nomoreparties.co' + movie.image.url : 'http://www.empty.com/asd.jpeg',
-      trailer: movie.trailerLink ? movie.trailerLink : 'http://www.empty.com',
+      trailer: (movie.trailerLink && validator.isURL(movie.trailerLink)) ? movie.trailerLink : 'http://www.empty.com',
       thumbnail: movie.image ?
         'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url : 'http://www.empty.com/asd.jpeg',
       movieId: movie.id,

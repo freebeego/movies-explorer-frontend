@@ -1,7 +1,6 @@
 class Api {
   constructor() {
-    /*this.url = 'https://api.movies.listen-me.ru/';*/
-    this.url = 'http://localhost:3003/';
+    this.url = 'https://api.movies.listen-me.ru/';
   }
 
   _fetch(path, queryParams = {}) {
