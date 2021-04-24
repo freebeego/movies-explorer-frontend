@@ -29,6 +29,7 @@
 }
 
 .nav_opened {
+  overflow: auto;
   visibility: visible;
   left: 0;
 }
