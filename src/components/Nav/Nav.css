@@ -25,9 +25,11 @@
   z-index: 2;
   transition: left .5s ease-out;
   background-color: #ffffff;
+  visibility: hidden;
 }
 
 .nav_opened {
+  visibility: visible;
   left: 0;
 }
 
