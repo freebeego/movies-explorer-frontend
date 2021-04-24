@@ -25,6 +25,11 @@
   margin-left: 6px;
 }
 
+.ident__bottom-question-link:hover {
+  cursor: pointer;
+  opacity: .7;
+}
+
 @media screen and (min-width: 768px) {
   .ident {
     padding: 232px 186px 0;
