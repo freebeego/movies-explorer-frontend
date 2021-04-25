@@ -8,6 +8,7 @@ class Api {
     const config = {};
     config.headers = { 'Accept': 'application/json' };
     config.credentials = 'include';
+    config.referrerPolicy = "no-cors"
     if (queryParams.method) config.method = queryParams.method;
     if (queryParams.headers) config.headers = { ...config.headers, ...queryParams.headers };
     if (queryParams.body) config.body = JSON.stringify(queryParams.body);
