@@ -24,7 +24,7 @@ function App() {
   React.useEffect(() => {
     MainApi.getMyInfo()
       .then((user) => {
-        setLoggedIn(true);
+        /*setLoggedIn(true);*/
         setCurrentUser(user);
         return MainApi.getMyMovies();
       })
