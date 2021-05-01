@@ -181,7 +181,7 @@
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1024px) {
   .nav {
     background-color: unset;
     height: 74px;
