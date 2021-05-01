@@ -1,0 +1,10 @@
+.error-message {
+  display: block;
+  text-align: center;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #000000;
+  padding-top: 63px;
+}

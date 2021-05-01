@@ -1,0 +1,56 @@
+.main {
+  padding: 70px 30px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main__title {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  margin: 0 0 80px;
+}
+
+.main__button {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  border: none;
+  padding: 0;
+  background-color: unset;
+  color: #ee3465;
+}
+
+.main__button:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .main {
+    padding: 236px 179px 0;
+  }
+
+  .main__title {
+    margin-bottom: 96px;
+  }
+
+  .main__button {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .main {
+    padding: 74px 435px 70px;
+  }
+
+  .main__title {
+    margin-bottom: 124px;
+  }
+}

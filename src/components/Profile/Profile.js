@@ -1,0 +1,114 @@
+import './Profile.css';
+import React from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import validator from 'validator';
+import Header from '../Header/Header';
+import Nav from '../Nav/Nav';
+import ProfileForm from './ProfileForm/ProfileForm';
+import ProfileFormInput from './ProfileForm/ProfileFormInput/ProfileFormInput';
+
+function Profile({ loggedIn, handleLogout, handleEditProfile }) {
+  const [fieldsData, setFieldsData] = React.useState({ name: '', email: '' });
+  const [fieldsError, setFieldsError] = React.useState({ name: false, email: false });
+  const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
+  const [serverError, setServerError] = React.useState(false);
+  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
+
+  const currentUser = React.useContext(CurrentUserContext);
+
+  React.useEffect(() => {
+    setFieldsData(currentUser);
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    if (
+      fieldsError.name || fieldsError.email ||
+      fieldsData.name === '' || fieldsData.email === '' ||
+      (fieldsData.name.trim() === currentUser.name && fieldsData.email.trim() === currentUser.email)
+    ) {
+      setIsSubmitButtonActive(false);
+    }
+    else {
+      setIsSubmitButtonActive(true);
+    }
+  }, [fieldsError, fieldsData, currentUser]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const user = {};
+
+    if (fieldsData.name !== currentUser.name) user.name = fieldsData.name;
+    if (fieldsData.email !== currentUser.email) user.email = fieldsData.email;
+
+    handleEditProfile(user)
+      .then(() => {
+        setServerError(false);
+        setServerErrorMessage('');
+      })
+      .catch((err) => {
+        setServerErrorMessage(err);
+        setServerError(true);
+      });
+  }
+
+  function handleChange(e) {
+    setFieldsData({
+      ...fieldsData,
+      [e.target.name]: e.target.value
+    });
+
+    setFieldsError({
+      ...fieldsError,
+      [e.target.name]: e.target.name === 'email' ? !validator.isEmail(e.target.value) : !e.target.validity.valid
+    });
+  }
+
+  return (
+    <>
+      { loggedIn && <Nav /> }
+      <Header
+        loggedIn={loggedIn}
+      />
+      <section className="main">
+        <h1 className="main__title">{`Привет, ${currentUser.name}!`}</h1>
+        <ProfileForm
+          handleSubmit={handleSubmit}
+          submitButtonText="Редактировать"
+          isSubmitButtonActive={ isSubmitButtonActive }
+          serverError={ serverError }
+          serverErrorMessage={ serverErrorMessage }
+        >
+          <ProfileFormInput
+            name="name"
+            label="Имя"
+            placeholder="Введите имя"
+            type="text"
+            value={fieldsData.name}
+            onChange={handleChange}
+            isRequired={true}
+            validError={fieldsError.name}
+            maxLength={30}
+            pattern="(.*(?<=\s*)[a-zA-Zа-яА-ЯёЁ\-]+.*(?=\s*)){2,30}"
+            errorMessage="Некорректное имя."
+          />
+          <ProfileFormInput
+            name="email"
+            label="E-mail"
+            placeholder="Введите e-mail"
+            type="email"
+            value={fieldsData.email}
+            onChange={handleChange}
+            isRequired={true}
+            validError={fieldsError.email}
+            maxLength={50}
+            errorMessage="Некорректный email."
+          />
+        </ProfileForm>
+        <button onClick={handleLogout} className="main__button">Выйти из аккаунта</button>
+      </section>
+    </>
+  );
+}
+
+export default Profile;
