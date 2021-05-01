@@ -16,6 +16,7 @@ function Search({ handleSubmit, query, handleChange, isShortFilm, handleSwitchPo
         onFocus={onFocus}
         placeholder="Фильм"
         className="search__input"
+        required
       />
       <button type="submit" className="search__submit" />
       <FilterCheckbox isShortFilm={isShortFilm} handleSwitchPositionChange={handleSwitchPositionChange} />
