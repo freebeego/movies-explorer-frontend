@@ -8,7 +8,7 @@ function Search({ handleSubmit, query, handleChange, isShortFilm, handleSwitchPo
   }
 
   return (
-    <form onSubmit={ handleSubmit } className="search">
+    <form onSubmit={ handleSubmit } className="search" noValidate>
       <input
         type="text"
         value={ query }
