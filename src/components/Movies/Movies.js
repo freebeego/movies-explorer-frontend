@@ -30,7 +30,6 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
   const [preloaderShown, setPreloaderShown] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [moreDidClick, setMoreDidClick] = React.useState(false);
-  const [emptyQuery, setEmptyQuery] = React.useState(false);
 
   const MoviesCardListRef = React.useRef();
 
@@ -39,17 +38,6 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
     localStorage.setItem('filteredMovies', JSON.stringify(queryFilteredMovies));
   },
     [queryFilteredMovies]);
-
-  React.useEffect(
-    () => {
-      if ((!isShortFilm && !queryFilteredMovies.length) || (isShortFilm && !shortFilmFilteredMovies.length)) {
-        setErrorMessage('По вашему запросу ничего не найдено.');
-      } else {
-        setErrorMessage('')
-      }
-    },
-    [isShortFilm, queryFilteredMovies, shortFilmFilteredMovies]
-  );
 
   React.useEffect(
     () => {
@@ -80,17 +68,26 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
     localStorage.setItem('query', query.trim());
     if (query.trim()) {
       setPreloaderShown(true);
-      setEmptyQuery(false);
       getMovies()
         .then((movies) => {
           const filteredMovies = queryFilter(movies, query.trim().toLowerCase());
+          if (!filteredMovies.length) {
+            setErrorMessage('По вашему запросу ничего не найдено.');
+            setQueryFilteredMovies([]);
+          } else {
             if (isShortFilm) {
               const shortFilteredMovies = shortFilmFilter(filteredMovies);
+              if (!shortFilteredMovies.length) {
+                setErrorMessage('По вашему запросу ничего не найдено.');
+                setShortFilmFilteredMovies([]);
+              } else {
                 setShortFilmFilteredMovies(shortFilteredMovies);
+              }
             } else {
               if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
             }
-          setQueryFilteredMovies(filteredMovies);
+            setQueryFilteredMovies(filteredMovies);
+          }
           setPreloaderShown(false);
         })
         .catch(() => {
@@ -98,7 +95,7 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
           setErrorMessage('Сервер не ответил на запрос. Попробуйте пожалуйста чуть позже.');
         });
     } else {
-      setEmptyQuery(true);
+      setErrorMessage('Пустой запрос.');
       localStorage.setItem('query', '');
       setQueryFilteredMovies([]);
       setShortFilmFilteredMovies([]);
@@ -110,9 +107,21 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
   }
 
   function handleSwitchPositionChange() {
-    localStorage.setItem('short', String(!isShortFilm));
-    if (!isShortFilm && !shortFilmFilteredMovies.length) {
-      setShortFilmFilteredMovies(shortFilmFilter(queryFilteredMovies));
+    if (!query.trim()) {
+      setErrorMessage('Пустой запрос.');
+    } else {
+      localStorage.setItem('short', String(!isShortFilm));
+      if (!isShortFilm && !shortFilmFilteredMovies.length) {
+        const shortFilmFilterMovies = shortFilmFilter(queryFilteredMovies);
+        if (shortFilmFilterMovies.length) {
+          setShortFilmFilteredMovies(shortFilmFilterMovies);
+        } else {
+          setErrorMessage('По вашему запросу ничего не найдено.');
+        }
+      } else {
+        if (queryFilteredMovies.length) setErrorMessage('');
+
+      }
     }
     setIsShortFilm(!isShortFilm);
   }
@@ -142,7 +151,7 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
         handleSwitchPositionChange={handleSwitchPositionChange}
       />
       {errorMessage ?
-        <ErrorMessage message={emptyQuery ? 'Пустой запрос.' : errorMessage} />
+        <ErrorMessage message={errorMessage} />
         :
         <MoviesCardList
           handleAddMyMovie={handleAddMyMovie}
