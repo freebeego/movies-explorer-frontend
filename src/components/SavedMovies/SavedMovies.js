@@ -28,14 +28,14 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
       shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) :
       shortFilmFilter(myMovies)
   );
-  const [shownMovies, setShownMovies] = React.useState(
-    (
+  const [shownMovies, setShownMovies] = React.useState( []
+    /*(
     localStorage.getItem('my_query') &&
     localStorage.getItem('my_short') &&
     localStorage.getItem('my_short') === 'true'
     ) ? shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) :
       localStorage.getItem('my_query') ?
-        queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase()) : myMovies
+        queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase()) : myMovies*/
   );
   const [errorMessage, setErrorMessage] = React.useState('');
   const [emptyQuery, setEmptyQuery] = React.useState(false);
