@@ -1,24 +1,33 @@
 import './Profile.css';
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import validator from 'validator';
 import Header from '../Header/Header';
 import Nav from '../Nav/Nav';
 import ProfileForm from './ProfileForm/ProfileForm';
 import ProfileFormInput from './ProfileForm/ProfileFormInput/ProfileFormInput';
+import useFormWithValidation from '../Ident/FormValidationHook/useFormWithValidation';
 
 function Profile({ loggedIn, handleLogout, handleEditProfile }) {
-  const [fieldsData, setFieldsData] = React.useState({ name: '', email: '' });
-  const [fieldsError, setFieldsError] = React.useState({ name: false, email: false });
-  const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
-  const [serverError, setServerError] = React.useState(false);
-  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
-
   const currentUser = React.useContext(CurrentUserContext);
+
+  const {
+    fieldsData,
+    fieldsError,
+    isSubmitButtonActive,
+    serverError,
+    serverErrorMessage,
+    handleChange,
+    handleSubmit,
+    setFieldsData,
+    setIsSubmitButtonActive
+  } = useFormWithValidation(
+    { name: '', email: '', password: '' },
+    handleEditProfile
+  );
 
   React.useEffect(() => {
     setFieldsData(currentUser);
-  }, [currentUser]);
+  }, [currentUser, setFieldsData]);
 
   React.useEffect(() => {
     if (
@@ -31,38 +40,7 @@ function Profile({ loggedIn, handleLogout, handleEditProfile }) {
     else {
       setIsSubmitButtonActive(true);
     }
-  }, [fieldsError, fieldsData, currentUser]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    const user = {};
-
-    if (fieldsData.name !== currentUser.name) user.name = fieldsData.name;
-    if (fieldsData.email !== currentUser.email) user.email = fieldsData.email;
-
-    handleEditProfile(user)
-      .then(() => {
-        setServerError(false);
-        setServerErrorMessage('');
-      })
-      .catch((err) => {
-        setServerErrorMessage(err);
-        setServerError(true);
-      });
-  }
-
-  function handleChange(e) {
-    setFieldsData({
-      ...fieldsData,
-      [e.target.name]: e.target.value
-    });
-
-    setFieldsError({
-      ...fieldsError,
-      [e.target.name]: e.target.name === 'email' ? !validator.isEmail(e.target.value) : !e.target.validity.valid
-    });
-  }
+  }, [fieldsError, fieldsData, currentUser, setIsSubmitButtonActive]);
 
   return (
     <>

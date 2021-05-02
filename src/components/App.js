@@ -64,10 +64,9 @@ function App() {
   }
 
   function handleEditProfile(user) {
-    return MainApi.editProfile(user)
-      .then((user) => {
-        setCurrentUser(user);
-      });
+    return MainApi
+      .editProfile(user.email === currentUser.email ? { name: user.name } : user)
+      .then((user) => setCurrentUser(user));
   }
 
   function handleAddMyMovie(movie) {

@@ -84,6 +84,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 16px;
+  gap: 10px;
 }
 
 .card__name {
@@ -97,7 +98,8 @@
   display: inline-block;
   box-sizing: border-box;
   min-width: 52px;
-  min-height: 18px;
+  height: 18px;
+
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 500;
   font-size: 11px;
