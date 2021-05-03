@@ -21,11 +21,10 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   );
   const [shortFilmFilteredMovies, setShortFilmFilteredMovies] = React.useState(
     (
-      localStorage.getItem('my_query') &&
-      localStorage.getItem('my_short') &&
       localStorage.getItem('my_short') === 'true'
     ) ?
-      shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) :
+      shortFilmFilter(queryFilter(myMovies, (localStorage.getItem('my_query') ?
+        localStorage.getItem('my_query').toLowerCase() : ''))) :
       []
   );
   const [shownMovies, setShownMovies] = React.useState( []);
@@ -34,7 +33,6 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
 
   React.useEffect(
     () => {
-      console.log(shortFilmFilteredMovies)
       setShownMovies(isShortFilm ? shortFilmFilteredMovies : queryFilteredMovies);
     },
     [isShortFilm, queryFilteredMovies, shortFilmFilteredMovies]
