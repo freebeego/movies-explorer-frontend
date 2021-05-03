@@ -4,4 +4,6 @@ const queryFilter = (movies, query) =>
 
 const shortFilmFilter = (movies) => movies.filter((movie) => movie.duration <= 40);
 
-module.exports = { queryFilter, shortFilmFilter };
+const filterAfterDelete = (movies, deletedMovie) => movies.filter((movie) => movie._id !== deletedMovie._id )
+
+module.exports = { queryFilter, shortFilmFilter, filterAfterDelete };

@@ -6,7 +6,7 @@ import Search from '../Search/Search';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { queryFilter, shortFilmFilter } from '../../utils/filters';
+import { queryFilter, shortFilmFilter, filterAfterDelete } from '../../utils/filters';
 
 function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   const [query, setQuery] = React.useState(
@@ -28,15 +28,7 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
       shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) :
       shortFilmFilter(myMovies)
   );
-  const [shownMovies, setShownMovies] = React.useState( []
-    /*(
-    localStorage.getItem('my_query') &&
-    localStorage.getItem('my_short') &&
-    localStorage.getItem('my_short') === 'true'
-    ) ? shortFilmFilter(queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase())) :
-      localStorage.getItem('my_query') ?
-        queryFilter(myMovies, localStorage.getItem('my_query').toLowerCase()) : myMovies*/
-  );
+  const [shownMovies, setShownMovies] = React.useState( []);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [emptyQuery, setEmptyQuery] = React.useState(false);
 
@@ -72,8 +64,8 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   function onDeleteMyMovie(movie) {
     handleDeleteMyMovie(movie)
       .then((deletedMovie) => {
-        setQueryFilteredMovies(queryFilteredMovies.filter((movie) => movie._id !== deletedMovie._id ));
-        setShortFilmFilteredMovies(shortFilmFilteredMovies.filter((movie) => movie._id !== deletedMovie._id ))
+        setQueryFilteredMovies(filterAfterDelete(queryFilteredMovies, deletedMovie));
+        setShortFilmFilteredMovies(filterAfterDelete(shortFilmFilteredMovies, deletedMovie));
       })
       .catch((err) => console.log(err));
   }
@@ -86,7 +78,7 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
     setIsShortFilm(!isShortFilm);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setErrorMessage('');
     localStorage.setItem('my_query', query.trim());
