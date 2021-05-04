@@ -16,8 +16,7 @@ function Register({ handleRegister }) {
     setIsSubmitButtonActive
   } = useFormWithValidation(
     { name: '', email: '', password: '' },
-    handleRegister,
-    '/movies'
+    handleRegister
   );
 
   React.useEffect(() => {

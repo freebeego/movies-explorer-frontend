@@ -3,6 +3,7 @@ import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import MainApi from '../utils/MainApi';
+import getMovies from '../utils/moviesApi';
 import Preloader from './Preloader/Preloader';
 import Register from './Register/Register';
 import Login from './Login/Login';
@@ -20,41 +21,54 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [initializationFinished, setInitializationFinished] = React.useState(false);
+  const [serverIsNotAvailable, setServerIsNotAvailable] = React.useState(false);
+  const [movies, setMovies] = React.useState([]);
   const [myMovies, setMyMovies] = React.useState([]);
 
   const history = useHistory();
 
   React.useEffect(() => {
     MainApi.getMyInfo()
-      .then((user) => {
-        setLoggedIn(true);
-        setCurrentUser(user);
-        return MainApi.getMyMovies();
-      })
-      .then((myMovies) => {
-        setMyMovies(myMovies);
-        setInitializationFinished(true);
-      })
+      .then((user) => Initialization(user))
       .catch((e) => {
         setInitializationFinished(true);
         console.log(e);
       });
   }, []);
 
-  function handleRegister(dataUser) {
-    return MainApi.signUp(dataUser)
-      .then((user) => {
+  function Initialization(user) {
+    setInitializationFinished(false);
+    Promise.all([MainApi.getMyMovies(), getMovies()])
+      .then(([myMovies, movies]) => {
         setCurrentUser(user);
         setLoggedIn(true);
+        setMyMovies(myMovies);
+        setMovies(movies);
+      })
+      .then(() => setInitializationFinished(true))
+      .catch((e) => {
+        setInitializationFinished(true);
+        setServerIsNotAvailable(true);
+        console.log(e);
       });
   }
 
-  function handleLogIn(dataUser) {
-    return MainApi.signIn(dataUser)
-      .then((user) => {
-        setCurrentUser(user);
-        setLoggedIn(true);
-      });
+  async function handleRegister(dataUser) {
+    try {
+      const user = await MainApi.signUp(dataUser);
+      Initialization(user);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async function handleLogIn(dataUser) {
+    try {
+      const user = await MainApi.signIn(dataUser);
+      Initialization(user);
+    } catch (err) {
+      return Promise.reject(err);
+    }
   }
 
   function handleLogout() {
@@ -134,6 +148,8 @@ function App() {
             handleAddMyMovie={handleAddMyMovie}
             handleDeleteMyMovie={handleDeleteMyMovie}
             myMovies={myMovies}
+            movies={movies}
+            serverIsNotAvailable={serverIsNotAvailable}
             />
 
             <ProtectedRoute

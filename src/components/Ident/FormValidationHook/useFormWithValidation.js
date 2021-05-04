@@ -1,8 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import validator from 'validator';
 
-function useFormWithValidation(initialFieldsData, onSubmit, pushPathOnSubmitSuccess) {
+function useFormWithValidation(initialFieldsData, onSubmit) {
   const [fieldsData, setFieldsData] = React.useState(initialFieldsData);
   const [fieldsError, setFieldsError] = React.useState({});
   const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
@@ -11,32 +11,34 @@ function useFormWithValidation(initialFieldsData, onSubmit, pushPathOnSubmitSucc
   const [isSubmitResultOk, setIsSubmitResultOk] = React.useState(false);
   const [timeoutId, setTimeoutId] = React.useState(0);
 
-  const history = useHistory();
+  const location = useLocation();
 
   function handleSubmit(e) {
     e.preventDefault();
     onSubmit(fieldsData)
       .then(() => {
-        if (pushPathOnSubmitSuccess) history.push(pushPathOnSubmitSuccess);
-        setIsThereServerMessage(false);
-        setServerMessage('');
-        setIsSubmitResultOk(true);
-        if (timeoutId) {
-          clearTimeout(timeoutId);
+        if (location.pathname === '/profile') {
+          setIsThereServerMessage(false);
+          setServerMessage('');
+          setIsSubmitResultOk(true);
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+          }
+          setTimeoutId(
+            setTimeout(
+              () => {
+                setIsSubmitResultOk(false);
+                setTimeoutId(0);
+              },
+              3000)
+          );
         }
-        setTimeoutId(
-          setTimeout(
-            () => {
-              setIsSubmitResultOk(false);
-              setTimeoutId(0);
-            },
-            3000)
-        );
       })
       .catch((err) => {
         setServerMessage(err);
         setIsThereServerMessage(true);
         setIsSubmitResultOk(false);
+        setIsSubmitButtonActive(false);
       });
   }
 

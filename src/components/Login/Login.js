@@ -16,8 +16,7 @@ function Login({ handleLogIn }) {
     setIsSubmitButtonActive
   } = useFormWithValidation(
     {email: '', password: ''},
-    handleLogIn,
-    '/movies'
+    handleLogIn
   );
 
   React.useEffect(() => {

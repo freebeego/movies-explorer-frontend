@@ -8,11 +8,10 @@ import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import More from './More/More';
 import Footer from '../Footer/Footer';
-import getMovies from '../../utils/moviesApi';
 import { queryFilter, shortFilmFilter } from '../../utils/filters';
 import { SERVERS_IS_NOT_AVAILABLE, FOUND_NOTHING, EMPTY_QUERY } from '../../utils/constants';
 
-function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
+function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie, movies, serverIsNotAvailable }) {
   const [query, setQuery] = React.useState(
     localStorage.getItem('query') ? localStorage.getItem('query') : ''
   );
@@ -28,26 +27,17 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
       shortFilmFilter(JSON.parse(localStorage.getItem('filteredMovies'))) : []
   );
   const [shownMovies, setShownMovies] = React.useState([]);
-  const [preloaderShown, setPreloaderShown] = React.useState(true);
+  const [preloaderShown, setPreloaderShown] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [moreDidClick, setMoreDidClick] = React.useState(false);
-  const [movies, setMovies] = React.useState([]);
 
   const MoviesCardListRef = React.useRef();
 
   React.useEffect(
     () => {
-      getMovies()
-        .then((movies) => {
-          setPreloaderShown(false);
-          setMovies(movies);
-        })
-        .catch(() => {
-          setPreloaderShown(false);
-          setErrorMessage(SERVERS_IS_NOT_AVAILABLE);
-        });
+      if (serverIsNotAvailable) setErrorMessage(SERVERS_IS_NOT_AVAILABLE);
     },
-    []
+    [serverIsNotAvailable]
   );
 
   React.useEffect(
