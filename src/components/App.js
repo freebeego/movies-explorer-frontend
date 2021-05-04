@@ -14,7 +14,7 @@ import SavedMovies from './SavedMovies/SavedMovies';
 import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
 import validator from 'validator';
-import { api, emptyLink, emptyTextField } from '../utils/constants';
+import { API_MOVIES, EMPTY_LINK, EMPTY_TEXT_FIELD } from '../utils/constants';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -80,12 +80,12 @@ function App() {
       duration: movie.duration,
       year: movie.year,
       description: movie.description,
-      image: movie.image ? api.movies + movie.image.url : emptyLink,
-      trailer: (movie.trailerLink && validator.isURL(movie.trailerLink)) ? movie.trailerLink : emptyLink,
-      thumbnail: movie.image ? api.movies + movie.image.formats.thumbnail.url : emptyLink,
+      image: movie.image ? API_MOVIES + movie.image.url : EMPTY_LINK,
+      trailer: (movie.trailerLink && validator.isURL(movie.trailerLink)) ? movie.trailerLink : EMPTY_LINK,
+      thumbnail: movie.image ? API_MOVIES + movie.image.formats.thumbnail.url : EMPTY_LINK,
       movieId: movie.id,
       nameRU: movie.nameRU,
-      nameEN: movie.nameEN ? movie.nameEN : emptyTextField
+      nameEN: movie.nameEN ? movie.nameEN : EMPTY_TEXT_FIELD
     })
       .then((movie) => setMyMovies([ ...myMovies, movie ]));
   }

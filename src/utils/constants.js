@@ -1,21 +1,24 @@
-const api = {
-  main: 'https://api.movies.listen-me.ru/',
-  movies: 'https://api.nomoreparties.co/'
-};
+const API_MAIN = 'https://api.movies.listen-me.ru/';
+const API_MOVIES = 'https://api.nomoreparties.co/';
 
-const emptyLink = 'https://www.empty.com';
+const EMPTY_LINK = 'https://www.empty.com';
+const EMPTY_TEXT_FIELD = 'empty';
 
-const emptyTextField = 'empty';
+const FOUND_NOTHING = 'По вашему запросу ничего не найдено.';
+const SERVERS_IS_NOT_AVAILABLE = 'Сервер временно не доступен';
+const EMPTY_QUERY = 'Пустой запрос.';
+const THERE_ARE_NO_FILMS = 'Вы еще не сохранили ни одного фильма';
 
-const searchError = {
-  foundNothing: 'По вашему запросу ничего не найдено.',
-  serverIsNotAvailable: 'Сервер временно не доступен',
-  emptyQuery: 'Пустой запрос.',
-  thereAreNoFilms: 'Вы еще не сохранили ни одного фильма'
-};
-
-const ProfileSucceedMessage = 'Данные профиля успешно обновлены.';
+const PROFILE_SUCCEED_MESSAGE = 'Данные профиля успешно обновлены.';
 
 module.exports = {
-  api, emptyLink, emptyTextField, searchError, ProfileSucceedMessage
+  API_MAIN,
+  API_MOVIES,
+  EMPTY_LINK,
+  EMPTY_TEXT_FIELD,
+  FOUND_NOTHING,
+  SERVERS_IS_NOT_AVAILABLE,
+  EMPTY_QUERY,
+  THERE_ARE_NO_FILMS,
+  PROFILE_SUCCEED_MESSAGE
 };

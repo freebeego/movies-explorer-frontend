@@ -1,8 +1,8 @@
-import { api } from './constants';
+import { API_MAIN } from './constants';
 
 class Api {
   constructor() {
-    this.url = api.main;
+    this.url = API_MAIN;
     /*this.url = 'http://localhost:3003/';*/
   }
 

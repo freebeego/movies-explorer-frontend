@@ -2,7 +2,7 @@ import './MoviesCardList.css';
 import React from 'react';
 import MoviesCard from './MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
-import { api } from '../../utils/constants';
+import { API_MOVIES } from '../../utils/constants';
 
 const MoviesCardList = React.forwardRef(
   function ({ children, movies, myMovies, handleAddMyMovie, handleDeleteMyMovie }, ref) {
@@ -36,7 +36,7 @@ const MoviesCardList = React.forwardRef(
               filmSaveToggle={filmSaveToggle}
               name={movie.nameRU}
               banner={!movie.image ? '' :
-                location.pathname === "/movies" ? api.movies + movie.image.url : movie.image}
+                location.pathname === "/movies" ? API_MOVIES + movie.image.url : movie.image}
               duration={movie.duration}
               trailerLink={location.pathname === "/movies" ? movie.trailerLink : movie.trailer}
             />
