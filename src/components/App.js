@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import MainApi from '../utils/MainApi';
 import Preloader from './Preloader/Preloader';
@@ -20,6 +20,8 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [initializationFinished, setInitializationFinished] = React.useState(false);
   const [myMovies, setMyMovies] = React.useState([]);
+
+  const history = useHistory();
 
   React.useEffect(() => {
     MainApi.getMyInfo()
@@ -57,6 +59,7 @@ function App() {
   function handleLogout() {
     return MainApi.signOut()
       .then(() => {
+        history.push('/');
         setCurrentUser({});
         setLoggedIn(false);
         localStorage.clear();
