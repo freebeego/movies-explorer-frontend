@@ -1,7 +1,9 @@
+import { api } from './constants';
+
 class Api {
   constructor() {
-    /*this.url = 'https://api.movies.listen-me.ru/';*/
-    this.url = 'http://localhost:3003/';
+    this.url = api.main;
+    /*this.url = 'http://localhost:3003/';*/
   }
 
   _fetch(path, queryParams = {}) {

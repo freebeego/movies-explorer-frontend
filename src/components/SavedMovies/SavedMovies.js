@@ -7,6 +7,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { queryFilter, shortFilmFilter, filterAfterDelete } from '../../utils/filters';
+import { searchError } from '../../utils/constants';
 
 function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   const [query, setQuery] = React.useState(
@@ -41,7 +42,7 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   React.useEffect(
     () => {
       if ((!isShortFilm && !queryFilteredMovies.length) || (isShortFilm && !shortFilmFilteredMovies.length)) {
-        setErrorMessage('По вашему запросу ничего не найдено.');
+        setErrorMessage(searchError.foundNothing);
       } else {
         setErrorMessage('')
       }
@@ -51,7 +52,7 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
 
   React.useEffect(
     () => {
-      if (!myMovies.length) setErrorMessage('Вы еще не сохранили ни одного фильма')
+      if (!myMovies.length) setErrorMessage(searchError.thereAreNoFilms)
     },
     [myMovies, queryFilteredMovies, shortFilmFilteredMovies, isShortFilm]
   );
@@ -111,7 +112,7 @@ function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
         handleSwitchPositionChange={handleSwitchPositionChange}
       />
       {errorMessage ?
-        <ErrorMessage message={emptyQuery ? 'Пустой запрос.' : errorMessage}/>
+        <ErrorMessage message={emptyQuery ? searchError.emptyQuery : errorMessage}/>
         :
         <MoviesCardList
           movies={shownMovies}
