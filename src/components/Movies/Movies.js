@@ -27,11 +27,27 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
       shortFilmFilter(JSON.parse(localStorage.getItem('filteredMovies'))) : []
   );
   const [shownMovies, setShownMovies] = React.useState([]);
-  const [preloaderShown, setPreloaderShown] = React.useState(false);
+  const [preloaderShown, setPreloaderShown] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [moreDidClick, setMoreDidClick] = React.useState(false);
+  const [movies, setMovies] = React.useState([]);
 
   const MoviesCardListRef = React.useRef();
+
+  React.useEffect(
+    () => {
+      getMovies()
+        .then((movies) => {
+          setPreloaderShown(false);
+          setMovies(movies);
+        })
+        .catch(() => {
+          setPreloaderShown(false);
+          setErrorMessage('Сервер временно не доступен');
+        });
+    },
+    []
+  );
 
   React.useEffect(
     () => {
@@ -68,32 +84,25 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
     localStorage.setItem('query', query.trim());
     if (query.trim()) {
       setPreloaderShown(true);
-      getMovies()
-        .then((movies) => {
-          const filteredMovies = queryFilter(movies, query.trim().toLowerCase());
-          if (!filteredMovies.length) {
+      const filteredMovies = queryFilter(movies, query.trim().toLowerCase());
+      if (!filteredMovies.length) {
+        setErrorMessage('По вашему запросу ничего не найдено.');
+        setQueryFilteredMovies([]);
+      } else {
+        if (isShortFilm) {
+          const shortFilteredMovies = shortFilmFilter(filteredMovies);
+          if (!shortFilteredMovies.length) {
             setErrorMessage('По вашему запросу ничего не найдено.');
-            setQueryFilteredMovies([]);
+            setShortFilmFilteredMovies([]);
           } else {
-            if (isShortFilm) {
-              const shortFilteredMovies = shortFilmFilter(filteredMovies);
-              if (!shortFilteredMovies.length) {
-                setErrorMessage('По вашему запросу ничего не найдено.');
-                setShortFilmFilteredMovies([]);
-              } else {
-                setShortFilmFilteredMovies(shortFilteredMovies);
-              }
-            } else {
-              if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
-            }
-            setQueryFilteredMovies(filteredMovies);
+            setShortFilmFilteredMovies(shortFilteredMovies);
           }
-          setPreloaderShown(false);
-        })
-        .catch(() => {
-          setPreloaderShown(false);
-          setErrorMessage('Сервер не ответил на запрос. Попробуйте пожалуйста чуть позже.');
-        });
+        } else {
+          if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
+        }
+        setQueryFilteredMovies(filteredMovies);
+      }
+      setPreloaderShown(false);
     } else {
       setErrorMessage('Пустой запрос.');
       localStorage.setItem('query', '');
