@@ -14,12 +14,13 @@ function Profile({ loggedIn, handleLogout, handleEditProfile }) {
     fieldsData,
     fieldsError,
     isSubmitButtonActive,
-    serverError,
-    serverErrorMessage,
+    isThereServerMessage,
+    serverMessage,
     handleChange,
     handleSubmit,
     setFieldsData,
-    setIsSubmitButtonActive
+    setIsSubmitButtonActive,
+    isSubmitResultOk
   } = useFormWithValidation(
     { name: '', email: '', password: '' },
     handleEditProfile
@@ -54,8 +55,9 @@ function Profile({ loggedIn, handleLogout, handleEditProfile }) {
           handleSubmit={handleSubmit}
           submitButtonText="Редактировать"
           isSubmitButtonActive={ isSubmitButtonActive }
-          serverError={ serverError }
-          serverErrorMessage={ serverErrorMessage }
+          isThereServerMessage={ isThereServerMessage }
+          serverMessage={ serverMessage }
+          isSubmitResultOk={isSubmitResultOk}
         >
           <ProfileFormInput
             name="name"

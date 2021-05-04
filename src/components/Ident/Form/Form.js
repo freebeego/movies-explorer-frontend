@@ -5,8 +5,8 @@ function Form({
                 handleSubmit,
                 submitButtonText,
                 isSubmitButtonActive,
-                serverError,
-                serverErrorMessage
+                isThereServerMessage,
+                serverMessage
 }) {
   return (
     <form
@@ -16,9 +16,9 @@ function Form({
     >
       {children}
       <span
-        className={ 'form__error' + (serverError ? ' form__error_active' : '') }
+        className={ 'form__error' + (isThereServerMessage ? ' form__error_active' : '') }
       >
-        {serverErrorMessage}
+        {serverMessage}
       </span>
       <button
         type="submit"

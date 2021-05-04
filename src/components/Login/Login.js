@@ -9,8 +9,8 @@ function Login({ handleLogIn }) {
     fieldsData,
     fieldsError,
     isSubmitButtonActive,
-    serverError,
-    serverErrorMessage,
+    isThereServerMessage,
+    serverMessage,
     handleChange,
     handleSubmit,
     setIsSubmitButtonActive
@@ -42,8 +42,8 @@ function Login({ handleLogIn }) {
       submitButtonText="Войти"
       handleSubmit={ handleSubmit }
       isSubmitButtonActive={ isSubmitButtonActive }
-      serverError={ serverError }
-      serverErrorMessage={ serverErrorMessage }
+      isThereServerMessage={ isThereServerMessage }
+      serverMessage={ serverMessage }
     >
       <Input
         name="email"

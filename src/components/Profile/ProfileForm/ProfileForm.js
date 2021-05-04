@@ -5,8 +5,9 @@ function ProfileForm({
                        handleSubmit,
                        submitButtonText,
                        isSubmitButtonActive,
-                       serverError,
-                       serverErrorMessage
+                       isThereServerMessage,
+                       serverMessage,
+                       isSubmitResultOk
 }) {
   return (
     <form
@@ -16,9 +17,10 @@ function ProfileForm({
     >
       { children }
       <span
-        className={ 'profile-form__error' + (serverError ? ' profile-form__error_active' : '') }
+        className={ 'profile-form__error' + (isSubmitResultOk ? ' profile-form__error_none' :
+          isThereServerMessage ? ' profile-form__error_active' : '') }
       >
-        {serverErrorMessage}
+        {isSubmitResultOk ? 'Данные профиля успешно обновлены.' : serverMessage}
       </span>
       <button
         type="submit"

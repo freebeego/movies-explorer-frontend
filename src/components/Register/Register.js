@@ -9,8 +9,8 @@ function Register({ handleRegister }) {
     fieldsData,
     fieldsError,
     isSubmitButtonActive,
-    serverError,
-    serverErrorMessage,
+    isThereServerMessage,
+    serverMessage,
     handleChange,
     handleSubmit,
     setIsSubmitButtonActive
@@ -45,8 +45,8 @@ function Register({ handleRegister }) {
       submitButtonText="Зарегистрироваться"
       handleSubmit={handleSubmit}
       isSubmitButtonActive={isSubmitButtonActive}
-      serverError={ serverError }
-      serverErrorMessage={ serverErrorMessage }
+      isThereServerMessage={ isThereServerMessage }
+      serverMessage={ serverMessage }
     >
       <Input
         name="name"

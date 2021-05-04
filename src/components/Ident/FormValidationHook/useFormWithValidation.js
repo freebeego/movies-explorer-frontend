@@ -6,8 +6,10 @@ function useFormWithValidation(initialFieldsData, onSubmit, pushPathOnSubmitSucc
   const [fieldsData, setFieldsData] = React.useState(initialFieldsData);
   const [fieldsError, setFieldsError] = React.useState({});
   const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
-  const [serverError, setServerError] = React.useState(false);
-  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
+  const [isThereServerMessage, setIsThereServerMessage] = React.useState(false);
+  const [serverMessage, setServerMessage] = React.useState('');
+  const [isSubmitResultOk, setIsSubmitResultOk] = React.useState(false);
+  const [timeoutId, setTimeoutId] = React.useState(0);
 
   const history = useHistory();
 
@@ -16,12 +18,25 @@ function useFormWithValidation(initialFieldsData, onSubmit, pushPathOnSubmitSucc
     onSubmit(fieldsData)
       .then(() => {
         if (pushPathOnSubmitSuccess) history.push(pushPathOnSubmitSuccess);
-        setServerError(false);
-        setServerErrorMessage('');
+        setIsThereServerMessage(false);
+        setServerMessage('');
+        setIsSubmitResultOk(true);
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        setTimeoutId(
+          setTimeout(
+            () => {
+              setIsSubmitResultOk(false);
+              setTimeoutId(0);
+            },
+            3000)
+        );
       })
       .catch((err) => {
-        setServerErrorMessage(err);
-        setServerError(true);
+        setServerMessage(err);
+        setIsThereServerMessage(true);
+        setIsSubmitResultOk(false);
       });
   }
 
@@ -41,12 +56,13 @@ function useFormWithValidation(initialFieldsData, onSubmit, pushPathOnSubmitSucc
     fieldsData,
     fieldsError,
     isSubmitButtonActive,
-    serverError,
-    serverErrorMessage,
+    isThereServerMessage,
+    serverMessage,
     handleChange,
     handleSubmit,
     setFieldsData,
-    setIsSubmitButtonActive
+    setIsSubmitButtonActive,
+    isSubmitResultOk
   };
 }
 
