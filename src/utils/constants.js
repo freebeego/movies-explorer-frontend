@@ -1,5 +1,5 @@
-const API_MAIN = 'https://api.movies.listen-me.ru/';
-const API_MOVIES = 'https://api.nomoreparties.co/';
+const API_MAIN = 'https://api.movies.listen-me.ru';
+const API_MOVIES = 'https://api.nomoreparties.co';
 
 const EMPTY_LINK = 'https://www.empty.com';
 const EMPTY_TEXT_FIELD = 'empty';

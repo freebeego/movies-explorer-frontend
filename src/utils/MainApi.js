@@ -2,7 +2,7 @@ import { API_MAIN } from './constants';
 
 class Api {
   constructor() {
-    this.url = API_MAIN;
+    this.url = `${API_MAIN}/`;
     /*this.url = 'http://localhost:3003/';*/
   }
 
