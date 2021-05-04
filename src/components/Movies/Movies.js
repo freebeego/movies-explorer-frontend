@@ -9,7 +9,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import More from './More/More';
 import Footer from '../Footer/Footer';
 import { queryFilter, shortFilmFilter } from '../../utils/filters';
-import { SERVERS_IS_NOT_AVAILABLE, FOUND_NOTHING, EMPTY_QUERY } from '../../utils/constants';
+import { SERVERS_IS_NOT_AVAILABLE, FOUND_NOTHING, EMPTY_QUERY } from '../../config/constants';
 
 function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie, movies, serverIsNotAvailable }) {
   const [query, setQuery] = React.useState(

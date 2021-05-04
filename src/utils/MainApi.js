@@ -1,4 +1,4 @@
-import { API_MAIN } from './constants';
+import { API_MAIN } from '../config/constants';
 
 class Api {
   constructor() {

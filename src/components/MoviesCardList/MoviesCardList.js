@@ -2,7 +2,7 @@ import './MoviesCardList.css';
 import React from 'react';
 import MoviesCard from './MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
-import { API_MOVIES } from '../../utils/constants';
+import { API_MOVIES } from '../../config/constants';
 
 const MoviesCardList = React.forwardRef(
   function ({ children, movies, myMovies, handleAddMyMovie, handleDeleteMyMovie }, ref) {

@@ -7,7 +7,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { queryFilter, shortFilmFilter, filterAfterDelete } from '../../utils/filters';
-import { FOUND_NOTHING, THERE_ARE_NO_FILMS, EMPTY_QUERY } from '../../utils/constants';
+import { FOUND_NOTHING, THERE_ARE_NO_FILMS, EMPTY_QUERY } from '../../config/constants';
 
 function SavedMovies({ loggedIn, myMovies, handleDeleteMyMovie }) {
   const [query, setQuery] = React.useState(

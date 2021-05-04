@@ -1,4 +1,4 @@
-import { API_MOVIES } from './constants';
+import { API_MOVIES } from '../config/constants';
 
 export default function getMovies() {
   return fetch(`${API_MOVIES}/beatfilm-movies`,{ headers: { 'Accept': 'application/json' } })

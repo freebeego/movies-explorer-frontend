@@ -15,7 +15,7 @@ import SavedMovies from './SavedMovies/SavedMovies';
 import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
 import validator from 'validator';
-import { API_MOVIES, EMPTY_LINK, EMPTY_TEXT_FIELD } from '../utils/constants';
+import { API_MOVIES, EMPTY_LINK, EMPTY_TEXT_FIELD } from '../config/constants';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});

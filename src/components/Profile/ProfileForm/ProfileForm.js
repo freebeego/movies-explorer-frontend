@@ -1,5 +1,5 @@
 import './ProfileForm.css';
-import { PROFILE_SUCCEED_MESSAGE } from '../../../utils/constants';
+import { PROFILE_SUCCEED_MESSAGE } from '../../../config/constants';
 
 function ProfileForm({
                        children,
