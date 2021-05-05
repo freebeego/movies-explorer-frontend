@@ -9,8 +9,8 @@ function Ident({
                  submitButtonText,
                  handleSubmit,
                  isSubmitButtonActive,
-                 serverError,
-                 serverErrorMessage,
+                 isThereServerMessage,
+                 serverMessage,
                  title,
                  bottomQuestion
 }) {
@@ -23,8 +23,8 @@ function Ident({
         handleSubmit={ handleSubmit }
         submitButtonText={ submitButtonText }
         isSubmitButtonActive={ isSubmitButtonActive }
-        serverError={ serverError }
-        serverErrorMessage={ serverErrorMessage }
+        isThereServerMessage={ isThereServerMessage }
+        serverMessage={ serverMessage }
       >
         { children }
       </Form>

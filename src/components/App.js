@@ -1,8 +1,9 @@
 import './App.css';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import MainApi from '../utils/MainApi';
+import getMovies from '../utils/moviesApi';
 import Preloader from './Preloader/Preloader';
 import Register from './Register/Register';
 import Login from './Login/Login';
@@ -14,49 +15,66 @@ import SavedMovies from './SavedMovies/SavedMovies';
 import Profile from './Profile/Profile';
 import NotFound from './NotFound/NotFound';
 import validator from 'validator';
+import { API_MOVIES, EMPTY_LINK, EMPTY_TEXT_FIELD } from '../config/constants';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [initializationFinished, setInitializationFinished] = React.useState(false);
+  const [serverIsNotAvailable, setServerIsNotAvailable] = React.useState(false);
+  const [movies, setMovies] = React.useState([]);
   const [myMovies, setMyMovies] = React.useState([]);
+
+  const history = useHistory();
 
   React.useEffect(() => {
     MainApi.getMyInfo()
-      .then((user) => {
-        /*setLoggedIn(true);*/
-        setCurrentUser(user);
-        return MainApi.getMyMovies();
-      })
-      .then((myMovies) => {
-        setMyMovies(myMovies);
+      .then((user) => Initialization(user))
+      .catch((e) => {
         setInitializationFinished(true);
-      })
-      .catch(() => {
-        // TODO error message
-        setInitializationFinished(true);
+        console.log(e);
       });
   }, []);
 
-  function handleRegister(dataUser) {
-    return MainApi.signUp(dataUser)
-      .then((user) => {
+  function Initialization(user) {
+    setInitializationFinished(false);
+    Promise.all([MainApi.getMyMovies(), getMovies()])
+      .then(([myMovies, movies]) => {
         setCurrentUser(user);
         setLoggedIn(true);
+        setMyMovies(myMovies);
+        setMovies(movies);
+      })
+      .then(() => setInitializationFinished(true))
+      .catch((e) => {
+        setInitializationFinished(true);
+        setServerIsNotAvailable(true);
+        console.log(e);
       });
   }
 
-  function handleLogIn(dataUser) {
-    return MainApi.signIn(dataUser)
-      .then((user) => {
-        setCurrentUser(user);
-        setLoggedIn(true);
-      });
+  async function handleRegister(dataUser) {
+    try {
+      const user = await MainApi.signUp(dataUser);
+      Initialization(user);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async function handleLogIn(dataUser) {
+    try {
+      const user = await MainApi.signIn(dataUser);
+      Initialization(user);
+    } catch (err) {
+      return Promise.reject(err);
+    }
   }
 
   function handleLogout() {
     return MainApi.signOut()
       .then(() => {
+        history.push('/');
         setCurrentUser({});
         setLoggedIn(false);
         localStorage.clear();
@@ -64,10 +82,9 @@ function App() {
   }
 
   function handleEditProfile(user) {
-    return MainApi.editProfile(user)
-      .then((user) => {
-        setCurrentUser(user);
-      });
+    return MainApi
+      .editProfile(user.email === currentUser.email ? { name: user.name } : user)
+      .then((user) => setCurrentUser(user));
   }
 
   function handleAddMyMovie(movie) {
@@ -77,13 +94,12 @@ function App() {
       duration: movie.duration,
       year: movie.year,
       description: movie.description,
-      image: movie.image ? 'https://api.nomoreparties.co' + movie.image.url : 'http://www.empty.com/asd.jpeg',
-      trailer: (movie.trailerLink && validator.isURL(movie.trailerLink)) ? movie.trailerLink : 'http://www.empty.com',
-      thumbnail: movie.image ?
-        'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url : 'http://www.empty.com/asd.jpeg',
+      image: movie.image ? API_MOVIES + movie.image.url : EMPTY_LINK,
+      trailer: (movie.trailerLink && validator.isURL(movie.trailerLink)) ? movie.trailerLink : EMPTY_LINK,
+      thumbnail: movie.image ? API_MOVIES + movie.image.formats.thumbnail.url : EMPTY_LINK,
       movieId: movie.id,
       nameRU: movie.nameRU,
-      nameEN: movie.nameEN ? movie.nameEN : 'empty'
+      nameEN: movie.nameEN ? movie.nameEN : EMPTY_TEXT_FIELD
     })
       .then((movie) => setMyMovies([ ...myMovies, movie ]));
   }
@@ -132,6 +148,8 @@ function App() {
             handleAddMyMovie={handleAddMyMovie}
             handleDeleteMyMovie={handleDeleteMyMovie}
             myMovies={myMovies}
+            movies={movies}
+            serverIsNotAvailable={serverIsNotAvailable}
             />
 
             <ProtectedRoute

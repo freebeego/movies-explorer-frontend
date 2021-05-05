@@ -23,6 +23,11 @@
   visibility: visible;
 }
 
+.profile-form__error_none {
+  color: #2be080;
+  visibility: visible;
+}
+
 .profile-form__button {
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 500;

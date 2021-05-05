@@ -1,18 +1,23 @@
 import './Login.css';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import validator from 'validator';
 import Ident from '../Ident/Ident';
+import useFormWithValidation from '../Ident/FormValidationHook/useFormWithValidation';
 import Input from '../Ident/Form/Input/Input';
 
-function Login({ handleLogIn, loggedIn }) {
-  const [fieldsData, setFieldsData] = React.useState({email: '', password: ''});
-  const [fieldsError, setFieldsError] = React.useState({email: false, password: false});
-  const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
-  const [serverError, setServerError] = React.useState(false);
-  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
-
-  const history = useHistory();
+function Login({ handleLogIn }) {
+  const {
+    fieldsData,
+    fieldsError,
+    isSubmitButtonActive,
+    isThereServerMessage,
+    serverMessage,
+    handleChange,
+    handleSubmit,
+    setIsSubmitButtonActive
+  } = useFormWithValidation(
+    {email: '', password: ''},
+    handleLogIn
+  );
 
   React.useEffect(() => {
     if (fieldsError.email || fieldsError.password || fieldsData.email === ''|| fieldsData.password === '') {
@@ -21,29 +26,7 @@ function Login({ handleLogIn, loggedIn }) {
     else {
       setIsSubmitButtonActive(true);
     }
-  }, [fieldsError, fieldsData]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    handleLogIn(fieldsData)
-      .then(() => history.push('/movies'))
-      .catch((err) => {
-        setServerErrorMessage(err);
-        setServerError(true);
-      });
-  }
-
-  function handleChange(e) {
-    setFieldsData({
-      ...fieldsData,
-      [e.target.name]: e.target.value
-    });
-
-    setFieldsError({
-      ...fieldsError,
-      [e.target.name]: e.target.name === 'email' ? !validator.isEmail(e.target.value) : !e.target.validity.valid
-    });
-  }
+  }, [fieldsError, fieldsData, setIsSubmitButtonActive]);
 
   return (
     <Ident
@@ -55,13 +38,11 @@ function Login({ handleLogIn, loggedIn }) {
           text: 'Регистрация'
         }
       }}
-      onLogIn={ handleLogIn }
       submitButtonText="Войти"
-      handleSubmit={handleSubmit}
-      isSubmitButtonActive={isSubmitButtonActive}
-      serverError={ serverError }
-      serverErrorMessage={ serverErrorMessage }
-      loggedIn={ loggedIn }
+      handleSubmit={ handleSubmit }
+      isSubmitButtonActive={ isSubmitButtonActive }
+      isThereServerMessage={ isThereServerMessage }
+      serverMessage={ serverMessage }
     >
       <Input
         name="email"

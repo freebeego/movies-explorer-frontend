@@ -8,10 +8,10 @@ import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import More from './More/More';
 import Footer from '../Footer/Footer';
-import getMovies from '../../utils/moviesApi';
 import { queryFilter, shortFilmFilter } from '../../utils/filters';
+import { SERVERS_IS_NOT_AVAILABLE, FOUND_NOTHING, EMPTY_QUERY } from '../../config/constants';
 
-function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
+function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie, movies, serverIsNotAvailable }) {
   const [query, setQuery] = React.useState(
     localStorage.getItem('query') ? localStorage.getItem('query') : ''
   );
@@ -30,26 +30,21 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
   const [preloaderShown, setPreloaderShown] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [moreDidClick, setMoreDidClick] = React.useState(false);
-  const [emptyQuery, setEmptyQuery] = React.useState(false);
 
   const MoviesCardListRef = React.useRef();
+
+  React.useEffect(
+    () => {
+      if (serverIsNotAvailable) setErrorMessage(SERVERS_IS_NOT_AVAILABLE);
+    },
+    [serverIsNotAvailable]
+  );
 
   React.useEffect(
     () => {
     localStorage.setItem('filteredMovies', JSON.stringify(queryFilteredMovies));
   },
     [queryFilteredMovies]);
-
-  React.useEffect(
-    () => {
-      if ((!isShortFilm && !queryFilteredMovies.length) || (isShortFilm && !shortFilmFilteredMovies.length)) {
-        setErrorMessage('По вашему запросу ничего не найдено.');
-      } else {
-        setErrorMessage('')
-      }
-    },
-    [isShortFilm, queryFilteredMovies, shortFilmFilteredMovies]
-  );
 
   React.useEffect(
     () => {
@@ -80,25 +75,27 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
     localStorage.setItem('query', query.trim());
     if (query.trim()) {
       setPreloaderShown(true);
-      setEmptyQuery(false);
-      getMovies()
-        .then((movies) => {
-          const filteredMovies = queryFilter(movies, query.trim().toLowerCase());
-            if (isShortFilm) {
-              const shortFilteredMovies = shortFilmFilter(filteredMovies);
-                setShortFilmFilteredMovies(shortFilteredMovies);
-            } else {
-              if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
-            }
-          setQueryFilteredMovies(filteredMovies);
-          setPreloaderShown(false);
-        })
-        .catch(() => {
-          setPreloaderShown(false);
-          setErrorMessage('Сервер не ответил на запрос. Попробуйте пожалуйста чуть позже.');
-        });
+      const filteredMovies = queryFilter(movies, query.trim().toLowerCase());
+      if (!filteredMovies.length) {
+        setErrorMessage(FOUND_NOTHING);
+        setQueryFilteredMovies([]);
+      } else {
+        if (isShortFilm) {
+          const shortFilteredMovies = shortFilmFilter(filteredMovies);
+          if (!shortFilteredMovies.length) {
+            setErrorMessage(FOUND_NOTHING);
+            setShortFilmFilteredMovies([]);
+          } else {
+            setShortFilmFilteredMovies(shortFilteredMovies);
+          }
+        } else {
+          if (shortFilmFilteredMovies.length) setShortFilmFilteredMovies([]);
+        }
+        setQueryFilteredMovies(filteredMovies);
+      }
+      setPreloaderShown(false);
     } else {
-      setEmptyQuery(true);
+      setErrorMessage(EMPTY_QUERY);
       localStorage.setItem('query', '');
       setQueryFilteredMovies([]);
       setShortFilmFilteredMovies([]);
@@ -110,9 +107,21 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
   }
 
   function handleSwitchPositionChange() {
-    localStorage.setItem('short', String(!isShortFilm));
-    if (!isShortFilm && !shortFilmFilteredMovies.length) {
-      setShortFilmFilteredMovies(shortFilmFilter(queryFilteredMovies));
+    if (!query.trim()) {
+      setErrorMessage(EMPTY_QUERY);
+    } else {
+      localStorage.setItem('short', String(!isShortFilm));
+      if (!isShortFilm && !shortFilmFilteredMovies.length) {
+        const shortFilmFilterMovies = shortFilmFilter(queryFilteredMovies);
+        if (shortFilmFilterMovies.length) {
+          setShortFilmFilteredMovies(shortFilmFilterMovies);
+        } else {
+          setErrorMessage(FOUND_NOTHING);
+        }
+      } else {
+        if (queryFilteredMovies.length) setErrorMessage('');
+
+      }
     }
     setIsShortFilm(!isShortFilm);
   }
@@ -142,7 +151,7 @@ function Movies({ loggedIn, myMovies, handleAddMyMovie, handleDeleteMyMovie }) {
         handleSwitchPositionChange={handleSwitchPositionChange}
       />
       {errorMessage ?
-        <ErrorMessage message={emptyQuery ? 'Пустой запрос.' : errorMessage} />
+        <ErrorMessage message={errorMessage} />
         :
         <MoviesCardList
           handleAddMyMovie={handleAddMyMovie}

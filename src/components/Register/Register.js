@@ -1,18 +1,23 @@
 import './Register.css';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import validator from 'validator';
 import Ident from '../Ident/Ident';
+import useFormWithValidation from '../Ident/FormValidationHook/useFormWithValidation';
 import Input from '../Ident/Form/Input/Input';
 
-function Register({ handleRegister, loggedIn }) {
-  const [fieldsData, setFieldsData] = React.useState({ name: '', email: '', password: '' });
-  const [fieldsError, setFieldsError] = React.useState({ name: '', email: false, password: false });
-  const [isSubmitButtonActive, setIsSubmitButtonActive] = React.useState(false);
-  const [serverError, setServerError] = React.useState(false);
-  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
-
-  const history = useHistory();
+function Register({ handleRegister }) {
+  const {
+    fieldsData,
+    fieldsError,
+    isSubmitButtonActive,
+    isThereServerMessage,
+    serverMessage,
+    handleChange,
+    handleSubmit,
+    setIsSubmitButtonActive
+  } = useFormWithValidation(
+    { name: '', email: '', password: '' },
+    handleRegister
+  );
 
   React.useEffect(() => {
     if (
@@ -24,30 +29,7 @@ function Register({ handleRegister, loggedIn }) {
     else {
       setIsSubmitButtonActive(true);
     }
-  }, [fieldsError, fieldsData]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    handleRegister(fieldsData)
-      .then(() => history.push('/movies'))
-      .catch((err) => {
-        console.log(err)
-        setServerErrorMessage(err);
-        setServerError(true);
-      });
-  }
-
-  function handleChange(e) {
-    setFieldsData({
-      ...fieldsData,
-      [e.target.name]: e.target.value
-    });
-
-    setFieldsError({
-      ...fieldsError,
-      [e.target.name]: e.target.name === 'email' ? !validator.isEmail(e.target.value) : !e.target.validity.valid
-    });
-  }
+  }, [fieldsError, fieldsData, setIsSubmitButtonActive]);
 
   return (
     <Ident
@@ -59,13 +41,11 @@ function Register({ handleRegister, loggedIn }) {
           text: 'Войти'
         }
       }}
-      onRegister={ handleRegister }
       submitButtonText="Зарегистрироваться"
       handleSubmit={handleSubmit}
       isSubmitButtonActive={isSubmitButtonActive}
-      serverError={ serverError }
-      serverErrorMessage={ serverErrorMessage }
-      loggedIn={loggedIn}
+      isThereServerMessage={ isThereServerMessage }
+      serverMessage={ serverMessage }
     >
       <Input
         name="name"

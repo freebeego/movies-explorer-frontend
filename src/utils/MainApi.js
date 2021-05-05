@@ -1,6 +1,8 @@
+import { API_MAIN } from '../config/constants';
+
 class Api {
   constructor() {
-    this.url = 'https://api.movies.listen-me.ru/';
+    this.url = `${API_MAIN}/`;
     /*this.url = 'http://localhost:3003/';*/
   }
 

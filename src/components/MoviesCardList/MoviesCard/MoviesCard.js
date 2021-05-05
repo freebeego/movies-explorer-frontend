@@ -19,8 +19,8 @@ function MoviesCard({ filmSaveToggle, banner, name, duration, trailerLink, id, i
 
   return (
     <li className="card">
-      <a href={trailerLink} target="_blank" rel="noreferrer" className="card__link">
-        <img src={ banner } alt={name} className="card__image"/>
+      <a href={ trailerLink } target="_blank" rel="noreferrer" className="card__link">
+        <img src={ banner } alt={ name } className="card__image"/>
       </a>
       <button
         onClick={ saveHandle }
@@ -30,7 +30,7 @@ function MoviesCard({ filmSaveToggle, banner, name, duration, trailerLink, id, i
         Сохранить
       </button>
       <div className="card__caption">
-        <span className="card__name">{name}</span>
+        <span className="card__name">{ name }</span>
         <span className="card__duration">
           {durationFormatter(duration)}
         </span>
